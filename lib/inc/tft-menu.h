@@ -28,6 +28,7 @@ struct Menu_Item{
 enum main_menu_items{
 	SETTINGS,
 	BUTTONS_LOCK,
+	MESS_ARCHIVE,
 	MESSAGES,
 	PROGRAMMING,
 	SIGNAL_POWER,
@@ -88,9 +89,9 @@ void Buttons_Init(void);
 void Menu_Draw(const struct Menu_Item* menu);
 void Menu_Item_Select(const struct Menu_Item* menu, uint8_t item_num);
 void Menu_Item_Unselect(const struct Menu_Item* menu, uint8_t item_num);
-void Mess_Menu_Draw(void);
-void Message_Menu_Navigation(void);
-void Message_Read(void);
+void Mess_Menu_Draw(uint32_t addr);
+void Message_Menu_Navigation(uint32_t addr);
+void Message_Read(uint32_t addr);
 void Menu_Down(void);
 void Menu_Up(void);
 void Hour_Plus(void);

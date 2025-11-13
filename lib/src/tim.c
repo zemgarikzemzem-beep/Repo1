@@ -145,12 +145,14 @@ uint8_t receive_bit_show_flag=0,
 		static uint8_t offdelay = 10, SOS_delay=10, lock_delay=10;
 		static uint8_t switch_flag = 0, two_keys_flag=0;
 		uint8_t keys_lock_flag=0, autolock_flag=0;
+		
+		uint32_t messages_addr=0;
 
 void TIM6_IRQHandler(void){
 	TIM6->SR&=~TIM_SR_UIF;                      // A11 - UP, B9 - DOWN, A12 - BACK, B8 - OK
 	Items_Num=Current_Menu[0].value/10;  // Количество пунктов текущего меню
 	if(message_menu_flag){
-		Message_Menu_Navigation();
+		Message_Menu_Navigation(messages_addr);
 	}
 	else{
 		if(DOWN_KEY && !two_keys_flag && !keys_lock_flag){
@@ -189,8 +191,14 @@ void TIM6_IRQHandler(void){
 						TFT_Send_Str(MENU_CON_X, MENU_CON_Y+18, "БЛОК", 4, Font_11x18, BLUE, RED);
 						keys_lock_flag=1;
 						break;
+					case MESS_ARCHIVE:
+						messages_addr=FLASH_REC_MESS_ADDR;
+						Mess_Menu_Draw(messages_addr);
+						message_menu_flag=1;
+						break;
 					case MESSAGES:
-						Mess_Menu_Draw();
+						messages_addr=FLASH_PLA_ADDR;
+						Mess_Menu_Draw(messages_addr);
 						message_menu_flag=1;
 						break;
 					case PROGRAMMING:
@@ -215,7 +223,7 @@ void TIM6_IRQHandler(void){
 			else if(Current_Menu==menu_mess){
 				switch(Button_Selected){
 					case READ_MESS:
-						Message_Read();
+						Message_Read(FLASH_PLA_ADDR);
 						break;
 					case INFO_MESS:
 						break;

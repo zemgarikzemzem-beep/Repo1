@@ -152,18 +152,50 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>125</LineNumber>
+          <LineNumber>114</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134260366</Address>
+          <Address>134242720</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>.\main.c</Filename>
+          <Filename>.\lib\src\tft-menu.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\1\main.c\125</Expression>
+          <Expression>\\1\lib/src/tft-menu.c\114</Expression>
+        </Bp>
+        <Bp>
+          <Number>1</Number>
+          <Type>0</Type>
+          <LineNumber>94</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>134242758</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>.\lib\src\tft-menu.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\1\lib/src/tft-menu.c\94</Expression>
+        </Bp>
+        <Bp>
+          <Number>2</Number>
+          <Type>0</Type>
+          <LineNumber>134</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>134243014</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>.\lib\src\tft-menu.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\1\lib/src/tft-menu.c\134</Expression>
         </Bp>
       </Breakpoint>
       <WatchWindow1>

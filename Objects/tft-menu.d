@@ -17,3 +17,5 @@
 .\objects\tft-menu.o: .\lib\inc\flash.h
 .\objects\tft-menu.o: .\lib\inc\alerts.h
 .\objects\tft-menu.o: .\lib\inc\tim.h
+.\objects\tft-menu.o: .\lib\inc\data.h
+.\objects\tft-menu.o: .\lib\inc\gpio.h

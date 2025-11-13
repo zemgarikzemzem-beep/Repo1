@@ -6,6 +6,7 @@
 #include "rtc.h"
 #include "flash.h"
 #include "alerts.h"
+#include "data.h"
 
 extern void delay(__IO uint32_t tck);
 
@@ -42,7 +43,7 @@ const struct Menu_Item menu_autosleep_time[]={{"ВрДоСна+", 10+SLEEP_TIME_PLUS, N
 const struct Menu_Item menu_inversion[]={{"Инв вкл",20,NULL,menu_settings}, {"Инв выкл",1,NULL,menu_settings}};
 const struct Menu_Item menu_brightness[]={{"Яркость+",20,NULL,menu_settings}, {"Яркость-",1,NULL,menu_settings}};
 const struct Menu_Item menu_settings[]={{"Яркость",50+BRIGHTNESS,menu_brightness,menu_main}, {"Время",TIME,menu_time,menu_main}, {"Инверсия",INVERSION,menu_inversion,menu_main}, {"Автоблок",AUTOLOCK,menu_autolock,menu_main}, {"Время АБл",SLEEP_TIME,menu_autosleep_time,menu_main}};
-const struct Menu_Item menu_main[]={{"Настройки",50+SETTINGS,menu_settings,NULL}, {"БЛОК",BUTTONS_LOCK,NULL,NULL}, {"ПЛЛПА",MESSAGES,NULL,NULL}, {"Программ",PROGRAMMING,NULL,NULL}, {"Мощность",SIGNAL_POWER,NULL,NULL}};
+const struct Menu_Item menu_main[]={{"Настройки",60+SETTINGS,menu_settings,NULL}, {"БЛОК",BUTTONS_LOCK,NULL,NULL}, {"Сообщения",MESS_ARCHIVE,NULL,NULL}, {"ПЛЛПА",MESSAGES,NULL,NULL}, {"Программ",PROGRAMMING,NULL,NULL}, {"Мощность",SIGNAL_POWER,NULL,NULL}};
 
 struct Menu_Struct main_menu = {
 	3,
@@ -89,28 +90,28 @@ void Menu_Item_Unselect(const struct Menu_Item* menu, uint8_t item_num){
 
 /*============Выбор сообщения==============*/
 
-void Message_Menu_Item_Select(uint8_t item_num){
-	FLASH_ReadStr(FLASH_PLA_ADDR+MESS_MAX_SIZE*item_num, (uint8_t*)mess, MESS_MAX_ITEM_LENGTH);
+void Message_Menu_Item_Select(uint32_t addr, uint8_t item_num){
+	FLASH_ReadStr(addr+MESS_MAX_SIZE*item_num, (uint8_t*)mess, MESS_MAX_ITEM_LENGTH);
 	TFT_Send_Str(MENU_CON_X, MENU_CON_Y+item_num*18, mess, (strlen(mess)<MESS_MAX_ITEM_LENGTH)?strlen(mess):MESS_MAX_ITEM_LENGTH, Font_11x18, BLACK, WHITE);
 	Message_Selected=item_num;
 }
 
 /*============Отмена выбора сообщения==============*/
 
-void Message_Menu_Item_Unselect(uint8_t item_num){
-	FLASH_ReadStr(FLASH_PLA_ADDR+MESS_MAX_SIZE*item_num, (uint8_t*)mess, MESS_MAX_ITEM_LENGTH);
+void Message_Menu_Item_Unselect(uint32_t addr, uint8_t item_num){
+	FLASH_ReadStr(addr+MESS_MAX_SIZE*item_num, (uint8_t*)mess, MESS_MAX_ITEM_LENGTH);
 	TFT_Send_Str(MENU_CON_X, MENU_CON_Y+item_num*18, mess, (strlen(mess)<MESS_MAX_ITEM_LENGTH)?strlen(mess):MESS_MAX_ITEM_LENGTH, Font_11x18, WHITE, BLACK);
 }
 
 /*============Отрисовка списка сообщений==============*/
 
-void Mess_Menu_Draw(void){
+void Mess_Menu_Draw(uint32_t addr){
 	_CLEAR_MENU_SCREEN;
 	for(uint8_t i=0; i<MAX_MESS_ITEM_SCREEN; ++i){
-		FLASH_ReadStr(FLASH_PLA_ADDR+MESS_MAX_SIZE*i, (uint8_t*)mess, MESS_MAX_ITEM_LENGTH);
+		FLASH_ReadStr(addr+MESS_MAX_SIZE*i, (uint8_t*)mess, MESS_MAX_ITEM_LENGTH);
 		TFT_Send_Str(MENU_CON_X, MENU_CON_Y+i*18, mess, (strlen(mess)<MESS_MAX_ITEM_LENGTH)?strlen(mess):MESS_MAX_ITEM_LENGTH, Font_11x18, WHITE, BLACK);
 	}
-	Message_Menu_Item_Select(0);
+	Message_Menu_Item_Select(addr, 0);
 	mess_menu_sel_pos=0;
 }
 
@@ -118,25 +119,32 @@ void Mess_Menu_Draw(void){
 
 /*============Навигация по меню списка сообщений==============*/
 
-inline void Message_Menu_Navigation(void){
+inline void Message_Menu_Navigation(uint32_t addr){
+	switch(addr){
+		case FLASH_PLA_ADDR:
+			MESS_NUM=(FLASH_ReadByte(FLASH_SETTINGS_ADDR+PLA_ITEMS_NUM_1)<<8)+(FLASH_ReadByte(FLASH_SETTINGS_ADDR+PLA_ITEMS_NUM_0)&0xFF);
+			break;
+		case FLASH_REC_MESS_ADDR:
+			MESS_NUM=20;
+			break;
+	}
 	
-	MESS_NUM=(FLASH_ReadByte(FLASH_SETTINGS_ADDR+PLA_ITEMS_NUM_1)<<8)+(FLASH_ReadByte(FLASH_SETTINGS_ADDR+PLA_ITEMS_NUM_0)&0xFF);
 	
-	if(!(GPIOB->IDR&(1<<9))){
+	if(DOWN_KEY){
 		if(!In_Mess){                                // Прокрутка списка сообщений вниз
 			if(MESS_NUM<=MAX_MESS_ITEM_SCREEN){
-				Message_Menu_Item_Unselect(Message_Selected);
-				Message_Menu_Item_Select((Message_Selected+1)%MESS_NUM);
+				Message_Menu_Item_Unselect(addr, Message_Selected);
+				Message_Menu_Item_Select(addr, (Message_Selected+1)%MESS_NUM);
 			}
 			else{
 				if((Message_Selected+1)==MESS_NUM){
-					Mess_Menu_Draw();
+					Mess_Menu_Draw(addr);
 				}
 				else
 					if(mess_menu_sel_pos<MAX_MESS_ITEM_SCREEN-1){
-						FLASH_ReadStr(FLASH_PLA_ADDR+MESS_MAX_SIZE*Message_Selected, (uint8_t*)mess, MESS_MAX_ITEM_LENGTH);
+						FLASH_ReadStr(addr+MESS_MAX_SIZE*Message_Selected, (uint8_t*)mess, MESS_MAX_ITEM_LENGTH);
 						TFT_Send_Str(MENU_CON_X, MENU_CON_Y+(mess_menu_sel_pos++)*18, mess, (strlen(mess)<MESS_MAX_ITEM_LENGTH)?strlen(mess):MESS_MAX_ITEM_LENGTH, Font_11x18, WHITE, BLACK);
-						FLASH_ReadStr(FLASH_PLA_ADDR+MESS_MAX_SIZE*(++Message_Selected), (uint8_t*)mess, MESS_MAX_ITEM_LENGTH);
+						FLASH_ReadStr(addr+MESS_MAX_SIZE*(++Message_Selected), (uint8_t*)mess, MESS_MAX_ITEM_LENGTH);
 						TFT_Send_Str(MENU_CON_X, MENU_CON_Y+mess_menu_sel_pos*18, mess, (strlen(mess)<MESS_MAX_ITEM_LENGTH)?strlen(mess):MESS_MAX_ITEM_LENGTH, Font_11x18, BLACK, WHITE);
 					}
 					else{
@@ -144,10 +152,10 @@ inline void Message_Menu_Navigation(void){
 						++Message_Selected;
 						mess_menu_temp=Message_Selected-MAX_MESS_ITEM_SCREEN+1;
 						for(uint8_t i=0; i<MAX_MESS_ITEM_SCREEN-1; ++i){
-							FLASH_ReadStr(FLASH_PLA_ADDR+MESS_MAX_SIZE*(mess_menu_temp+i), (uint8_t*)mess, MESS_MAX_ITEM_LENGTH);
+							FLASH_ReadStr(addr+MESS_MAX_SIZE*(mess_menu_temp+i), (uint8_t*)mess, MESS_MAX_ITEM_LENGTH);
 							TFT_Send_Str(MENU_CON_X, MENU_CON_Y+i*18, mess, (strlen(mess)<MESS_MAX_ITEM_LENGTH)?strlen(mess):MESS_MAX_ITEM_LENGTH, Font_11x18, WHITE, BLACK);
 						}
-						FLASH_ReadStr(FLASH_PLA_ADDR+MESS_MAX_SIZE*(mess_menu_temp+MAX_MESS_ITEM_SCREEN-1), (uint8_t*)mess, MESS_MAX_ITEM_LENGTH);
+						FLASH_ReadStr(addr+MESS_MAX_SIZE*(mess_menu_temp+MAX_MESS_ITEM_SCREEN-1), (uint8_t*)mess, MESS_MAX_ITEM_LENGTH);
 						TFT_Send_Str(MENU_CON_X, MENU_CON_Y+(MAX_MESS_ITEM_SCREEN-1)*18, mess, (strlen(mess)<MESS_MAX_ITEM_LENGTH)?strlen(mess):MESS_MAX_ITEM_LENGTH, Font_11x18, BLACK, WHITE);
 					}
 			}
@@ -161,27 +169,27 @@ inline void Message_Menu_Navigation(void){
 		}
 	}
 		
-	if(!(GPIOA->IDR&(1<<11))){
+	if(UP_KEY){
 		if(!In_Mess){                                // Прокрутка списка сообщений вверх
 			if(MESS_NUM<=MAX_MESS_ITEM_SCREEN){
-				Message_Menu_Item_Unselect(Message_Selected);
-				Message_Menu_Item_Select((Message_Selected>0)?(Message_Selected-1):2);
+				Message_Menu_Item_Unselect(addr, Message_Selected);
+				Message_Menu_Item_Select(addr, (Message_Selected>0)?(Message_Selected-1):2);
 			}
 			else
 				if(mess_menu_sel_pos>0){
-					FLASH_ReadStr(FLASH_PLA_ADDR+MESS_MAX_SIZE*Message_Selected, (uint8_t*)mess, MESS_MAX_ITEM_LENGTH);
+					FLASH_ReadStr(addr+MESS_MAX_SIZE*Message_Selected, (uint8_t*)mess, MESS_MAX_ITEM_LENGTH);
 					TFT_Send_Str(MENU_CON_X, MENU_CON_Y+(mess_menu_sel_pos--)*18, mess, (strlen(mess)<MESS_MAX_ITEM_LENGTH)?strlen(mess):MESS_MAX_ITEM_LENGTH, Font_11x18, WHITE, BLACK);
-					FLASH_ReadStr(FLASH_PLA_ADDR+MESS_MAX_SIZE*(--Message_Selected), (uint8_t*)mess, MESS_MAX_ITEM_LENGTH);
+					FLASH_ReadStr(addr+MESS_MAX_SIZE*(--Message_Selected), (uint8_t*)mess, MESS_MAX_ITEM_LENGTH);
 					TFT_Send_Str(MENU_CON_X, MENU_CON_Y+mess_menu_sel_pos*18, mess, (strlen(mess)<MESS_MAX_ITEM_LENGTH)?strlen(mess):MESS_MAX_ITEM_LENGTH, Font_11x18, BLACK, WHITE);
 				}
 				else{
 					_CLEAR_MENU_SCREEN;
 					Message_Selected=(Message_Selected+MESS_NUM-1)%MESS_NUM;
-					FLASH_ReadStr(FLASH_PLA_ADDR+MESS_MAX_SIZE*Message_Selected, (uint8_t*)mess, MESS_MAX_ITEM_LENGTH);
+					FLASH_ReadStr(addr+MESS_MAX_SIZE*Message_Selected, (uint8_t*)mess, MESS_MAX_ITEM_LENGTH);
 					TFT_Send_Str(MENU_CON_X, MENU_CON_Y+0*18, mess, (strlen(mess)<MESS_MAX_ITEM_LENGTH)?strlen(mess):MESS_MAX_ITEM_LENGTH, Font_11x18, BLACK, WHITE);
 					
 					for(uint8_t i=1; i<MAX_MESS_ITEM_SCREEN; ++i){
-						FLASH_ReadStr(FLASH_PLA_ADDR+MESS_MAX_SIZE*((Message_Selected+i)%MESS_NUM), (uint8_t*)mess, MESS_MAX_ITEM_LENGTH);
+						FLASH_ReadStr(addr+MESS_MAX_SIZE*((Message_Selected+i)%MESS_NUM), (uint8_t*)mess, MESS_MAX_ITEM_LENGTH);
 						TFT_Send_Str(MENU_CON_X, MENU_CON_Y+i*18, mess, (strlen(mess)<MESS_MAX_ITEM_LENGTH)?strlen(mess):MESS_MAX_ITEM_LENGTH, Font_11x18, WHITE, BLACK);
 					}
 				}
@@ -197,20 +205,21 @@ inline void Message_Menu_Navigation(void){
 		}
 	}
 		
-	if(!(GPIOB->IDR&(1<<8))){             // Переход в меню выбора действий с сообщением
-		Current_Menu=menu_mess;
-		Menu_Draw(Current_Menu);
-		Menu_Item_Select(Current_Menu, 0);
-		message_menu_flag=0;
+	if(ENTER_KEY){             // Переход в меню выбора действий с сообщением
+//		Current_Menu=menu_mess;
+//		Menu_Draw(Current_Menu);
+//		Menu_Item_Select(Current_Menu, 0);
+//		message_menu_flag=0;
+		Message_Read(addr);
 	}
 		
-	if(!(GPIOA->IDR&(1<<12))){
+	if(BACK_KEY){
 		if(In_Mess && !message_received){           // Выход из сообщения
 			In_Mess=0;
 			Message_Current_Str=0;
 			_CLEAR_MENU_SCREEN;
 			for(uint8_t i=0; i<MAX_MESS_ITEM_SCREEN; ++i){
-				FLASH_ReadStr(FLASH_PLA_ADDR+MESS_MAX_SIZE*((Message_Selected-mess_menu_sel_pos+i)%MESS_NUM), (uint8_t*)mess, MESS_MAX_ITEM_LENGTH);
+				FLASH_ReadStr(addr+MESS_MAX_SIZE*((Message_Selected-mess_menu_sel_pos+i)%MESS_NUM), (uint8_t*)mess, MESS_MAX_ITEM_LENGTH);
 				TFT_Send_Str(MENU_CON_X, MENU_CON_Y+i*18, mess, (strlen(mess)<MESS_MAX_ITEM_LENGTH)?strlen(mess):MESS_MAX_ITEM_LENGTH, Font_11x18, (mess_menu_sel_pos!=i)?WHITE:BLACK, (mess_menu_sel_pos!=i)?BLACK:WHITE);
 			}
 		}
@@ -231,8 +240,8 @@ inline void Message_Menu_Navigation(void){
 
 /*============Вывод пункта ПЛА==============*/
 
-void Message_Read(void){
-	FLASH_ReadStr(FLASH_PLA_ADDR+MESS_MAX_SIZE*Message_Selected, (uint8_t*)mess, MESS_MAX_SIZE);                // + привязка ко времени!+1
+void Message_Read(uint32_t addr){
+	FLASH_ReadStr(addr+MESS_MAX_SIZE*Message_Selected, (uint8_t*)mess, MESS_MAX_SIZE);                // + привязка ко времени!+1
 	_CLEAR_MENU_SCREEN;
 	TFT_Send_Str(0, MENU_CON_Y, mess, (strlen(mess)<=MESS_MAX_DISP)?strlen(mess):MESS_MAX_DISP, Font_11x18, RED, CYAN);
 	mess_rows_num=(strlen(mess)%MAX_SYM_IN_STR==0)?(strlen(mess)/MAX_SYM_IN_STR):(strlen(mess)/MAX_SYM_IN_STR+1);
@@ -516,6 +525,10 @@ extern uint16_t label;
 
 extern uint32_t recw1, recw2;
 
+void MessRecToArch(void){
+	
+}
+
 inline void ShowSignal(void){
 	uint8_t is_12or14d=0;        // флаг разрядности
 	
@@ -565,7 +578,7 @@ inline void ShowSignal(void){
 			if(PLA_num+1<=MESS_NUM){
 				_CLEAR_MENU_SCREEN;
 				Message_Selected=PLA_num;
-				Message_Read();
+				Message_Read(FLASH_PLA_ADDR);
 				In_Mess=1;
 				message_menu_flag=1;
 				ALERT_ForMessage();
@@ -601,7 +614,7 @@ inline void ShowSignal(void){
 			if(PLA_num+1<=MESS_NUM){
 				_CLEAR_MENU_SCREEN;
 				Message_Selected=PLA_num;
-				Message_Read();
+				Message_Read(FLASH_PLA_ADDR);
 				In_Mess=1;
 				message_menu_flag=1;
 				ALERT_ForMessage();
