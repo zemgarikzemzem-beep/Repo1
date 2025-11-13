@@ -1,0 +1,10 @@
+.\objects\dwt.o: lib\src\dwt.c
+.\objects\dwt.o: .\lib\inc\dwt.h
+.\objects\dwt.o: C:\Users\User\AppData\Local\Arm\Packs\Keil\STM32F0xx_DFP\2.1.1\Drivers\CMSIS\Device\ST\STM32F0xx\Include\stm32f0xx.h
+.\objects\dwt.o: C:\Users\User\AppData\Local\Arm\Packs\Keil\STM32F0xx_DFP\2.1.1\Drivers\CMSIS\Device\ST\STM32F0xx\Include\stm32f030x8.h
+.\objects\dwt.o: .\lib\core_cm0.h
+.\objects\dwt.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\dwt.o: .\lib\cmsis_version.h
+.\objects\dwt.o: .\lib\cmsis_compiler.h
+.\objects\dwt.o: .\lib\cmsis_armcc.h
+.\objects\dwt.o: C:\Users\User\AppData\Local\Arm\Packs\Keil\STM32F0xx_DFP\2.1.1\Drivers\CMSIS\Device\ST\STM32F0xx\Include\system_stm32f0xx.h

@@ -1,0 +1,11 @@
+.\objects\data.o: lib\src\data.c
+.\objects\data.o: .\lib\inc\gpio.h
+.\objects\data.o: C:\Users\User\AppData\Local\Arm\Packs\Keil\STM32F0xx_DFP\2.1.1\Drivers\CMSIS\Device\ST\STM32F0xx\Include\stm32f0xx.h
+.\objects\data.o: C:\Users\User\AppData\Local\Arm\Packs\Keil\STM32F0xx_DFP\2.1.1\Drivers\CMSIS\Device\ST\STM32F0xx\Include\stm32f030xc.h
+.\objects\data.o: .\lib\core_cm0.h
+.\objects\data.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\data.o: .\lib\cmsis_version.h
+.\objects\data.o: .\lib\cmsis_compiler.h
+.\objects\data.o: .\lib\cmsis_armcc.h
+.\objects\data.o: C:\Users\User\AppData\Local\Arm\Packs\Keil\STM32F0xx_DFP\2.1.1\Drivers\CMSIS\Device\ST\STM32F0xx\Include\system_stm32f0xx.h
+.\objects\data.o: .\lib\inc\data.h

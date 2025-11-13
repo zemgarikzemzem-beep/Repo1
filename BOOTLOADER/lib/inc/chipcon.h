@@ -1,0 +1,9 @@
+uint8_t cc_init();
+void chl_load(int);
+uint8_t cc2520osc_on();
+uint8_t cc2520osc_off();
+uint8_t rbuf_get();
+void send_ack();
+void send_nack();
+void send_vers();
+void echo();

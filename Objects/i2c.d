@@ -1,0 +1,10 @@
+.\objects\i2c.o: lib\src\i2c.c
+.\objects\i2c.o: .\lib\inc\i2c.h
+.\objects\i2c.o: C:\Users\User\AppData\Local\Arm\Packs\Keil\STM32F0xx_DFP\2.1.1\Drivers\CMSIS\Device\ST\STM32F0xx\Include\stm32f0xx.h
+.\objects\i2c.o: C:\Users\User\AppData\Local\Arm\Packs\Keil\STM32F0xx_DFP\2.1.1\Drivers\CMSIS\Device\ST\STM32F0xx\Include\stm32f030xc.h
+.\objects\i2c.o: .\lib\core_cm0.h
+.\objects\i2c.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\i2c.o: .\lib\cmsis_version.h
+.\objects\i2c.o: .\lib\cmsis_compiler.h
+.\objects\i2c.o: .\lib\cmsis_armcc.h
+.\objects\i2c.o: C:\Users\User\AppData\Local\Arm\Packs\Keil\STM32F0xx_DFP\2.1.1\Drivers\CMSIS\Device\ST\STM32F0xx\Include\system_stm32f0xx.h

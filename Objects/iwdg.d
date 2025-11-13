@@ -1,0 +1,10 @@
+.\objects\iwdg.o: lib\src\iwdg.c
+.\objects\iwdg.o: .\lib\inc\iwdg.h
+.\objects\iwdg.o: C:\Users\User\AppData\Local\Arm\Packs\Keil\STM32F0xx_DFP\2.1.1\Drivers\CMSIS\Device\ST\STM32F0xx\Include\stm32f0xx.h
+.\objects\iwdg.o: C:\Users\User\AppData\Local\Arm\Packs\Keil\STM32F0xx_DFP\2.1.1\Drivers\CMSIS\Device\ST\STM32F0xx\Include\stm32f030xc.h
+.\objects\iwdg.o: .\lib\core_cm0.h
+.\objects\iwdg.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\iwdg.o: .\lib\cmsis_version.h
+.\objects\iwdg.o: .\lib\cmsis_compiler.h
+.\objects\iwdg.o: .\lib\cmsis_armcc.h
+.\objects\iwdg.o: C:\Users\User\AppData\Local\Arm\Packs\Keil\STM32F0xx_DFP\2.1.1\Drivers\CMSIS\Device\ST\STM32F0xx\Include\system_stm32f0xx.h

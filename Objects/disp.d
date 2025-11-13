@@ -1,0 +1,14 @@
+.\objects\disp.o: lib\src\disp.c
+.\objects\disp.o: .\lib\inc\disp.h
+.\objects\disp.o: C:\Users\User\AppData\Local\Arm\Packs\Keil\STM32F0xx_DFP\2.1.1\Drivers\CMSIS\Device\ST\STM32F0xx\Include\stm32f0xx.h
+.\objects\disp.o: C:\Users\User\AppData\Local\Arm\Packs\Keil\STM32F0xx_DFP\2.1.1\Drivers\CMSIS\Device\ST\STM32F0xx\Include\stm32f030xc.h
+.\objects\disp.o: .\lib\core_cm0.h
+.\objects\disp.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\disp.o: .\lib\cmsis_version.h
+.\objects\disp.o: .\lib\cmsis_compiler.h
+.\objects\disp.o: .\lib\cmsis_armcc.h
+.\objects\disp.o: C:\Users\User\AppData\Local\Arm\Packs\Keil\STM32F0xx_DFP\2.1.1\Drivers\CMSIS\Device\ST\STM32F0xx\Include\system_stm32f0xx.h
+.\objects\disp.o: .\lib\inc\fonts.h
+.\objects\disp.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\objects\disp.o: .\lib\inc\spi.h
+.\objects\disp.o: .\lib\inc\gpio.h

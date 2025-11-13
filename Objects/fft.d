@@ -1,0 +1,11 @@
+.\objects\fft.o: lib\src\fft.c
+.\objects\fft.o: .\lib\inc\fft.h
+.\objects\fft.o: C:\Users\User\AppData\Local\Arm\Packs\Keil\STM32F0xx_DFP\2.1.1\Drivers\CMSIS\Device\ST\STM32F0xx\Include\stm32f0xx.h
+.\objects\fft.o: C:\Users\User\AppData\Local\Arm\Packs\Keil\STM32F0xx_DFP\2.1.1\Drivers\CMSIS\Device\ST\STM32F0xx\Include\stm32f030xc.h
+.\objects\fft.o: .\lib\core_cm0.h
+.\objects\fft.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\fft.o: .\lib\cmsis_version.h
+.\objects\fft.o: .\lib\cmsis_compiler.h
+.\objects\fft.o: .\lib\cmsis_armcc.h
+.\objects\fft.o: C:\Users\User\AppData\Local\Arm\Packs\Keil\STM32F0xx_DFP\2.1.1\Drivers\CMSIS\Device\ST\STM32F0xx\Include\system_stm32f0xx.h
+.\objects\fft.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h

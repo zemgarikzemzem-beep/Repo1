@@ -1,0 +1,11 @@
+.\objects\pwm.o: lib\src\pwm.c
+.\objects\pwm.o: .\lib\inc\pwm.h
+.\objects\pwm.o: C:\Users\User\AppData\Local\Arm\Packs\Keil\STM32F0xx_DFP\2.1.1\Drivers\CMSIS\Device\ST\STM32F0xx\Include\stm32f0xx.h
+.\objects\pwm.o: C:\Users\User\AppData\Local\Arm\Packs\Keil\STM32F0xx_DFP\2.1.1\Drivers\CMSIS\Device\ST\STM32F0xx\Include\stm32f030x8.h
+.\objects\pwm.o: .\lib\core_cm0.h
+.\objects\pwm.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\pwm.o: .\lib\cmsis_version.h
+.\objects\pwm.o: .\lib\cmsis_compiler.h
+.\objects\pwm.o: .\lib\cmsis_armcc.h
+.\objects\pwm.o: C:\Users\User\AppData\Local\Arm\Packs\Keil\STM32F0xx_DFP\2.1.1\Drivers\CMSIS\Device\ST\STM32F0xx\Include\system_stm32f0xx.h
+.\objects\pwm.o: .\lib\inc\tim.h

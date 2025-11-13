@@ -1,0 +1,10 @@
+.\objects\spi.o: lib\src\spi.c
+.\objects\spi.o: .\lib\inc\spi.h
+.\objects\spi.o: C:\Users\User\AppData\Local\Arm\Packs\Keil\STM32F0xx_DFP\2.1.1\Drivers\CMSIS\Device\ST\STM32F0xx\Include\stm32f0xx.h
+.\objects\spi.o: C:\Users\User\AppData\Local\Arm\Packs\Keil\STM32F0xx_DFP\2.1.1\Drivers\CMSIS\Device\ST\STM32F0xx\Include\stm32f030xc.h
+.\objects\spi.o: .\lib\core_cm0.h
+.\objects\spi.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\spi.o: .\lib\cmsis_version.h
+.\objects\spi.o: .\lib\cmsis_compiler.h
+.\objects\spi.o: .\lib\cmsis_armcc.h
+.\objects\spi.o: C:\Users\User\AppData\Local\Arm\Packs\Keil\STM32F0xx_DFP\2.1.1\Drivers\CMSIS\Device\ST\STM32F0xx\Include\system_stm32f0xx.h

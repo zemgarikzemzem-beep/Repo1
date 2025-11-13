@@ -1,0 +1,10 @@
+.\objects\exti.o: lib\src\exti.c
+.\objects\exti.o: .\lib\inc\exti.h
+.\objects\exti.o: C:\Users\User\AppData\Local\Arm\Packs\Keil\STM32F0xx_DFP\2.1.1\Drivers\CMSIS\Device\ST\STM32F0xx\Include\stm32f0xx.h
+.\objects\exti.o: C:\Users\User\AppData\Local\Arm\Packs\Keil\STM32F0xx_DFP\2.1.1\Drivers\CMSIS\Device\ST\STM32F0xx\Include\stm32f030xc.h
+.\objects\exti.o: .\lib\core_cm0.h
+.\objects\exti.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\exti.o: .\lib\cmsis_version.h
+.\objects\exti.o: .\lib\cmsis_compiler.h
+.\objects\exti.o: .\lib\cmsis_armcc.h
+.\objects\exti.o: C:\Users\User\AppData\Local\Arm\Packs\Keil\STM32F0xx_DFP\2.1.1\Drivers\CMSIS\Device\ST\STM32F0xx\Include\system_stm32f0xx.h

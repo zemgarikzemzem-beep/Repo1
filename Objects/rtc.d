@@ -1,0 +1,12 @@
+.\objects\rtc.o: lib\src\rtc.c
+.\objects\rtc.o: .\lib\inc\rtc.h
+.\objects\rtc.o: C:\Users\User\AppData\Local\Arm\Packs\Keil\STM32F0xx_DFP\2.1.1\Drivers\CMSIS\Device\ST\STM32F0xx\Include\stm32f0xx.h
+.\objects\rtc.o: C:\Users\User\AppData\Local\Arm\Packs\Keil\STM32F0xx_DFP\2.1.1\Drivers\CMSIS\Device\ST\STM32F0xx\Include\stm32f030xc.h
+.\objects\rtc.o: .\lib\core_cm0.h
+.\objects\rtc.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\rtc.o: .\lib\cmsis_version.h
+.\objects\rtc.o: .\lib\cmsis_compiler.h
+.\objects\rtc.o: .\lib\cmsis_armcc.h
+.\objects\rtc.o: C:\Users\User\AppData\Local\Arm\Packs\Keil\STM32F0xx_DFP\2.1.1\Drivers\CMSIS\Device\ST\STM32F0xx\Include\system_stm32f0xx.h
+.\objects\rtc.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+.\objects\rtc.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h

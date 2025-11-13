@@ -1,0 +1,10 @@
+.\objects\flash.o: lib\src\flash.c
+.\objects\flash.o: .\lib\inc\flash.h
+.\objects\flash.o: C:\Users\User\AppData\Local\Arm\Packs\Keil\STM32F0xx_DFP\2.1.1\Drivers\CMSIS\Device\ST\STM32F0xx\Include\stm32f0xx.h
+.\objects\flash.o: C:\Users\User\AppData\Local\Arm\Packs\Keil\STM32F0xx_DFP\2.1.1\Drivers\CMSIS\Device\ST\STM32F0xx\Include\stm32f030xc.h
+.\objects\flash.o: .\lib\core_cm0.h
+.\objects\flash.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\flash.o: .\lib\cmsis_version.h
+.\objects\flash.o: .\lib\cmsis_compiler.h
+.\objects\flash.o: .\lib\cmsis_armcc.h
+.\objects\flash.o: C:\Users\User\AppData\Local\Arm\Packs\Keil\STM32F0xx_DFP\2.1.1\Drivers\CMSIS\Device\ST\STM32F0xx\Include\system_stm32f0xx.h
