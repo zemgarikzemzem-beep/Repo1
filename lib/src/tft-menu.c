@@ -107,7 +107,16 @@ void Message_Menu_Item_Unselect(uint32_t addr, uint8_t item_num){
 
 void Mess_Menu_Draw(uint32_t addr){
 	_CLEAR_MENU_SCREEN;
-	for(uint8_t i=0; i<MAX_MESS_ITEM_SCREEN; ++i){
+	uint16_t mess_num;
+//	switch(addr){
+//		case FLASH_PLA_ADDR:
+//			mess_num=(FLASH_ReadByte(FLASH_SETTINGS_ADDR+PLA_ITEMS_NUM_1)<<8)+(FLASH_ReadByte(FLASH_SETTINGS_ADDR+PLA_ITEMS_NUM_0)&0xFF);
+//			break;
+//		case FLASH_REC_MESS_ADDR:
+//			mess_num=FLASH_ReadByte(FLASH_SETTINGS_ADDR+REC_MESS_NUM);
+//			break;
+//	}
+	for(uint8_t i=0; i<(MAX_MESS_ITEM_SCREEN); ++i){ // (mess_num>MAX_MESS_ITEM_SCREEN)?:mess_num
 		FLASH_ReadStr(addr+MESS_MAX_SIZE*i, (uint8_t*)mess, MESS_MAX_ITEM_LENGTH);
 		TFT_Send_Str(MENU_CON_X, MENU_CON_Y+i*18, mess, (strlen(mess)<MESS_MAX_ITEM_LENGTH)?strlen(mess):MESS_MAX_ITEM_LENGTH, Font_11x18, WHITE, BLACK);
 	}
@@ -125,7 +134,7 @@ inline void Message_Menu_Navigation(uint32_t addr){
 			MESS_NUM=(FLASH_ReadByte(FLASH_SETTINGS_ADDR+PLA_ITEMS_NUM_1)<<8)+(FLASH_ReadByte(FLASH_SETTINGS_ADDR+PLA_ITEMS_NUM_0)&0xFF);
 			break;
 		case FLASH_REC_MESS_ADDR:
-			MESS_NUM=20;
+			MESS_NUM=FLASH_ReadByte(FLASH_SETTINGS_ADDR+REC_MESS_NUM);
 			break;
 	}
 	
@@ -525,12 +534,23 @@ extern uint16_t label;
 
 extern uint32_t recw1, recw2;
 
-void MessRecToArch(void){
-	
+void MessRecToArch(char* data){
+	char tmp_str[MESS_MAX_SIZE] = {0,};
+	uint8_t mess_shift=FLASH_ReadByte(FLASH_SETTINGS_ADDR+CURRENT_REC_MESS);
+	if(mess_shift==0xFF) mess_shift=0;
+	strcpy(tmp_str,RTC_GetDate());//+RTC_GetTime()+data;
+	strcat(tmp_str, RTC_GetTime());
+	strcat(tmp_str, "   ");
+	strcat(tmp_str, data);
+//	sprintf(tmp_str, "%s", RTC_GetDate()); //  %s %s, RTC_GetTime(), data
+	FLASH_WriteStr_PLA(FLASH_REC_MESS_ADDR+((mess_shift<20)?mess_shift:0)*MESS_MAX_SIZE, (uint8_t*)tmp_str, strlen(tmp_str)+1);
+	FLASH_WriteByte(FLASH_SETTINGS_ADDR+CURRENT_REC_MESS, mess_shift+1);
+	FLASH_WriteByte(FLASH_SETTINGS_ADDR+REC_MESS_NUM, mess_shift+1);
 }
 
 inline void ShowSignal(void){
 	uint8_t is_12or14d=0;        // флаг разрядности
+	char tmp_str[MESS_MAX_SIZE] = {0,};
 	
 	MESS_NUM=(FLASH_ReadByte(FLASH_SETTINGS_ADDR+PLA_ITEMS_NUM_1)<<8)+(FLASH_ReadByte(FLASH_SETTINGS_ADDR+PLA_ITEMS_NUM_0)&0xFF);
 	
@@ -557,18 +577,19 @@ inline void ShowSignal(void){
 				_CLEAR_MENU_SCREEN;
 				TFT_Send_Str(0, 100, "Персональн. вызов!!!", 20, Font_11x18, RED, CYAN);
 				ALERT_ForMessage();
+				MessRecToArch("Персональн. вызов!!!");
 			};
 		}
 		if((byte>>10)==0b11){
 			is_menu=0;
 			_CLEAR_MENU_SCREEN;
-			if((byte&0x003)==0b11) TFT_Send_Str(0, 100, "Авария-1", 8, Font_11x18, RED, CYAN);
-			if((byte&0x003)==0b00) TFT_Send_Str(0, 100, "Авария-2", 8, Font_11x18, RED, CYAN);
+			if((byte&0x003)==0b11) {TFT_Send_Str(0, 100, "Авария-1", 8, Font_11x18, RED, CYAN); MessRecToArch("Авария-1");}
+			if((byte&0x003)==0b00) {TFT_Send_Str(0, 100, "Авария-2", 8, Font_11x18, RED, CYAN); MessRecToArch("Авария-2");}
 			
-			if((byte&0x0F0)==0x030) TFT_Send_Str(0, 118, "Рудник-1", 8, Font_11x18, RED, CYAN);
-			if((byte&0x0F0)==0x0C0) TFT_Send_Str(0, 118, "Рудник-2", 8, Font_11x18, RED, CYAN);
-			if((byte&0x0F0)==0x0F0) TFT_Send_Str(0, 118, "Рудник-3", 8, Font_11x18, RED, CYAN);
-			if((byte&0x0F0)==0x000) TFT_Send_Str(0, 118, "Рудник-4", 8, Font_11x18, RED, CYAN);
+			if((byte&0x0F0)==0x030) {TFT_Send_Str(0, 118, "Рудник-1", 8, Font_11x18, RED, CYAN);}
+			if((byte&0x0F0)==0x0C0) {TFT_Send_Str(0, 118, "Рудник-2", 8, Font_11x18, RED, CYAN);}
+			if((byte&0x0F0)==0x0F0) {TFT_Send_Str(0, 118, "Рудник-3", 8, Font_11x18, RED, CYAN);}
+			if((byte&0x0F0)==0x000) {TFT_Send_Str(0, 118, "Рудник-4", 8, Font_11x18, RED, CYAN);}
 			ALERT_ForMessage();
 		}
 		else if((byte>>10)==0b01){
@@ -582,6 +603,8 @@ inline void ShowSignal(void){
 				In_Mess=1;
 				message_menu_flag=1;
 				ALERT_ForMessage();
+				FLASH_ReadStr(FLASH_PLA_ADDR+Message_Selected, (uint8_t*)tmp_str, MESS_MAX_SIZE);
+				MessRecToArch(tmp_str);
 			}
 		}
 	}
@@ -593,13 +616,14 @@ inline void ShowSignal(void){
 				_CLEAR_MENU_SCREEN;
 				TFT_Send_Str(0, 100, "Персональн. вызов!!!", 20, Font_11x18, RED, CYAN);
 				ALERT_ForMessage();
+				MessRecToArch("Персональн. вызов!!!");
 			}
 		}
 		if((byte_14d>>12)==0b11){
 			is_menu=0;
 			_CLEAR_MENU_SCREEN;
-			if((byte_14d&0x00C)==0b1100) TFT_Send_Str(0, 100, "Авария-1", 8, Font_11x18, RED, CYAN);
-			if((byte_14d&0x00C)==0b0000) TFT_Send_Str(0, 100, "Авария-2", 8, Font_11x18, RED, CYAN);
+			if((byte_14d&0x00C)==0b1100) {TFT_Send_Str(0, 100, "Авария-1", 8, Font_11x18, RED, CYAN); MessRecToArch("Авария-1");}
+			if((byte_14d&0x00C)==0b0000) {TFT_Send_Str(0, 100, "Авария-2", 8, Font_11x18, RED, CYAN); MessRecToArch("Авария-2");}
 			
 			if((byte_14d&0x3C0)==0x0C0) TFT_Send_Str(0, 118, "Рудник-1", 8, Font_11x18, RED, CYAN);
 			if((byte_14d&0x3C0)==0x300) TFT_Send_Str(0, 118, "Рудник-2", 8, Font_11x18, RED, CYAN);
@@ -618,6 +642,8 @@ inline void ShowSignal(void){
 				In_Mess=1;
 				message_menu_flag=1;
 				ALERT_ForMessage();
+				FLASH_ReadStr(FLASH_PLA_ADDR+Message_Selected, (uint8_t*)tmp_str, MESS_MAX_SIZE);
+				MessRecToArch(tmp_str);
 			}
 			
 			

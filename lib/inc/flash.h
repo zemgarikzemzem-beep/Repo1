@@ -6,7 +6,7 @@
 #define FLASH_PLA_ADDR						0x08020000
 #define FLASH_SETTINGS_ADDR				0x08030000
 #define FLASH_SDFB_ADDR						0x08030014  // ShutDownedFromButton
-#define FLASH_REC_MESS_ADDR				0x08030500
+#define FLASH_REC_MESS_ADDR				0x08030800
 #define FLASH_PAGESIZE						0x800
 #define SETTINGS_BYTES_NUM				12
 
@@ -27,7 +27,9 @@ enum pager_settings{
 	PRG_CRC_0,
 	PRG_CRC_1,
 	PRG_SIZE_0,
-	PRG_SIZE_1
+	PRG_SIZE_1,
+	CURRENT_REC_MESS,
+	REC_MESS_NUM
 };
 
 enum pager_alerts{
