@@ -260,8 +260,10 @@ Section Cross References
     tft-menu.o(i.MessRecToArch) refers to strcpy.o(.text) for strcpy
     tft-menu.o(i.MessRecToArch) refers to rtc.o(i.RTC_GetTime) for RTC_GetTime
     tft-menu.o(i.MessRecToArch) refers to strcat.o(.text) for strcat
-    tft-menu.o(i.MessRecToArch) refers to strlen.o(.text) for strlen
+    tft-menu.o(i.MessRecToArch) refers to flash.o(i.FLASH_PageErase) for FLASH_PageErase
     tft-menu.o(i.MessRecToArch) refers to flash.o(i.FLASH_WriteStr_PLA) for FLASH_WriteStr_PLA
+    tft-menu.o(i.MessRecToArch) refers to flash.o(i.FLASH_ReadStr) for FLASH_ReadStr
+    tft-menu.o(i.MessRecToArch) refers to strlen.o(.text) for strlen
     tft-menu.o(i.MessRecToArch) refers to flash.o(i.FLASH_WriteByte) for FLASH_WriteByte
     tft-menu.o(i.Mess_Menu_Draw) refers to disp.o(i.TFT_Fill_Area) for TFT_Fill_Area
     tft-menu.o(i.Mess_Menu_Draw) refers to flash.o(i.FLASH_ReadStr) for FLASH_ReadStr
@@ -1184,96 +1186,96 @@ Image Symbol Table
     i.Menu_Item_Unselect                     0x08005f04   Section        0  tft-menu.o(i.Menu_Item_Unselect)
     i.Menu_Up                                0x08005f44   Section        0  tft-menu.o(i.Menu_Up)
     i.MessRecToArch                          0x0800613c   Section        0  tft-menu.o(i.MessRecToArch)
-    i.Mess_Menu_Draw                         0x080061cc   Section        0  tft-menu.o(i.Mess_Menu_Draw)
-    i.Message_Menu_Item_Select               0x08006250   Section        0  tft-menu.o(i.Message_Menu_Item_Select)
-    i.Message_Menu_Item_Unselect             0x080062b4   Section        0  tft-menu.o(i.Message_Menu_Item_Unselect)
-    i.Message_Menu_Navigation                0x08006310   Section        0  tft-menu.o(i.Message_Menu_Navigation)
-    i.Message_Read                           0x0800694c   Section        0  tft-menu.o(i.Message_Read)
-    i.Min_Plus                               0x08006a00   Section        0  tft-menu.o(i.Min_Plus)
-    i.Month_Plus                             0x08006aec   Section        0  tft-menu.o(i.Month_Plus)
-    i.Ot_ulybki                              0x08006c00   Section        0  alerts.o(i.Ot_ulybki)
-    i.RTC_GetDate                            0x08006c64   Section        0  rtc.o(i.RTC_GetDate)
-    i.RTC_GetTime                            0x08006dc8   Section        0  rtc.o(i.RTC_GetTime)
-    i.SPI1_Init                              0x08006ea8   Section        0  spi.o(i.SPI1_Init)
-    i.SPI2_Init                              0x08006f3c   Section        0  spi.o(i.SPI2_Init)
-    i.SPI2_Send_Byte                         0x08006fd0   Section        0  spi.o(i.SPI2_Send_Byte)
-    i.ShowSignal                             0x08006ff8   Section        0  tft-menu.o(i.ShowSignal)
-    i.SystemInit                             0x08007650   Section        0  system_stm32f0xx.o(i.SystemInit)
-    i.TFT_Draw_Image_Mono                    0x08007654   Section        0  disp.o(i.TFT_Draw_Image_Mono)
-    i.TFT_Fill_Area                          0x08007704   Section        0  disp.o(i.TFT_Fill_Area)
-    i.TFT_Fill_Color                         0x0800776c   Section        0  disp.o(i.TFT_Fill_Color)
-    i.TFT_Init                               0x080077bc   Section        0  disp.o(i.TFT_Init)
-    i.TFT_Send_Char                          0x080078f4   Section        0  disp.o(i.TFT_Send_Char)
-    i.TFT_Send_Command                       0x080079f8   Section        0  disp.o(i.TFT_Send_Command)
-    i.TFT_Send_Data                          0x08007a06   Section        0  disp.o(i.TFT_Send_Data)
-    i.TFT_Send_Str                           0x08007a14   Section        0  disp.o(i.TFT_Send_Str)
-    i.TFT_Set_Area                           0x08007a70   Section        0  disp.o(i.TFT_Set_Area)
-    i.TIM14_IRQHandler                       0x08007ae8   Section        0  tim.o(i.TIM14_IRQHandler)
-    i.TIM14_Init                             0x08007dcc   Section        0  tim.o(i.TIM14_Init)
-    i.TIM15_IRQHandler                       0x08007e38   Section        0  tim.o(i.TIM15_IRQHandler)
-    i.TIM15_Init                             0x08007e78   Section        0  tim.o(i.TIM15_Init)
-    i.TIM16_IRQHandler                       0x08007ee8   Section        0  tim.o(i.TIM16_IRQHandler)
-    i.TIM16_Init                             0x08007f28   Section        0  tim.o(i.TIM16_Init)
-    i.TIM17_IRQHandler                       0x08007f98   Section        0  tim.o(i.TIM17_IRQHandler)
-    i.TIM17_Init                             0x08008350   Section        0  tim.o(i.TIM17_Init)
-    i.TIM1_PWM_Init                          0x080083c0   Section        0  tim.o(i.TIM1_PWM_Init)
-    i.TIM3_IRQHandler                        0x08008454   Section        0  tim.o(i.TIM3_IRQHandler)
-    i.TIM3_Init                              0x08008564   Section        0  tim.o(i.TIM3_Init)
-    i.TIM6_IRQHandler                        0x080085ec   Section        0  tim.o(i.TIM6_IRQHandler)
-    i.TIM6_Init                              0x08008d94   Section        0  tim.o(i.TIM6_Init)
-    i.WeekDay_Calc                           0x08008e00   Section        0  tft-menu.o(i.WeekDay_Calc)
-    i.Year_Plus                              0x08008f1c   Section        0  tft-menu.o(i.Year_Plus)
-    i.__ARM_common_switch8                   0x08009028   Section        0  chipcon.o(i.__ARM_common_switch8)
-    i.__NVIC_EnableIRQ                       0x08009044   Section        0  tim.o(i.__NVIC_EnableIRQ)
-    __NVIC_EnableIRQ                         0x08009045   Thumb Code    18  tim.o(i.__NVIC_EnableIRQ)
-    i.__NVIC_SetPriority                     0x0800905c   Section        0  adc.o(i.__NVIC_SetPriority)
-    __NVIC_SetPriority                       0x0800905d   Thumb Code   110  adc.o(i.__NVIC_SetPriority)
-    i.__NVIC_SetPriority                     0x080090d4   Section        0  tim.o(i.__NVIC_SetPriority)
-    __NVIC_SetPriority                       0x080090d5   Thumb Code   110  tim.o(i.__NVIC_SetPriority)
-    i._is_digit                              0x0800914c   Section        0  __printf_wp.o(i._is_digit)
-    i.cc2520osc_off                          0x0800915c   Section        0  chipcon.o(i.cc2520osc_off)
-    i.cc2520osc_on                           0x0800918c   Section        0  chipcon.o(i.cc2520osc_on)
-    i.cc_init                                0x080091bc   Section        0  chipcon.o(i.cc_init)
-    i.chk_header                             0x08009290   Section        0  chipcon.o(i.chk_header)
-    i.chl_load                               0x08009378   Section        0  chipcon.o(i.chl_load)
-    i.data_read                              0x080093b8   Section        0  chipcon.o(i.data_read)
-    i.data_write                             0x08009438   Section        0  chipcon.o(i.data_write)
-    i.delay                                  0x080094dc   Section        0  main.o(i.delay)
-    i.echo                                   0x080094fc   Section        0  chipcon.o(i.echo)
-    i.get_pla                                0x08009508   Section        0  chipcon.o(i.get_pla)
-    i.goto_boot                              0x080096d4   Section        0  chipcon.o(i.goto_boot)
-    i.main                                   0x0800982c   Section        0  main.o(i.main)
-    i.play_note                              0x08009a70   Section        0  alerts.o(i.play_note)
-    i.prg_off                                0x08009ae0   Section        0  chipcon.o(i.prg_off)
-    i.prg_on                                 0x08009b90   Section        0  chipcon.o(i.prg_on)
-    i.program                                0x08009bf0   Section        0  chipcon.o(i.program)
-    i.rbuf_get                               0x08009cb0   Section        0  chipcon.o(i.rbuf_get)
-    i.readMEM                                0x08009d50   Section        0  chipcon.o(i.readMEM)
-    i.send_PLA_CRC                           0x08009d8c   Section        0  chipcon.o(i.send_PLA_CRC)
-    i.send_SOS_label                         0x08009e88   Section        0  chipcon.o(i.send_SOS_label)
-    i.send_ack                               0x08009ee0   Section        0  chipcon.o(i.send_ack)
-    i.send_label                             0x08009f7c   Section        0  chipcon.o(i.send_label)
-    i.send_nack                              0x08009fd0   Section        0  chipcon.o(i.send_nack)
-    i.spi1_write                             0x0800a000   Section        0  chipcon.o(i.spi1_write)
-    i.tbuf_load                              0x0800a078   Section        0  chipcon.o(i.tbuf_load)
-    i.tbuf_send                              0x0800a0e0   Section        0  chipcon.o(i.tbuf_send)
-    i.writeINS                               0x0800a15c   Section        0  chipcon.o(i.writeINS)
-    i.writeMEM                               0x0800a18c   Section        0  chipcon.o(i.writeMEM)
-    x$fpl$usenofp                            0x0800a1ca   Section        0  usenofp.o(x$fpl$usenofp)
-    .constdata                               0x0800a1d0   Section     1776  main.o(.constdata)
-    logo_mono_arr                            0x0800a1d0   Data         525  main.o(.constdata)
-    battery_mono_arr                         0x0800a3dd   Data          60  main.o(.constdata)
-    lightning_mono_arr                       0x0800a419   Data          16  main.o(.constdata)
-    fft_butterfly_arr                        0x0800a42a   Data        1024  main.o(.constdata)
-    Re_arr                                   0x0800a830   Data          72  main.o(.constdata)
-    Im_arr                                   0x0800a878   Data          72  main.o(.constdata)
-    .constdata                               0x0800a8c0   Section    20497  fonts.o(.constdata)
-    .constdata                               0x0800f8d4   Section      400  tft-menu.o(.constdata)
-    .constdata                               0x0800fa64   Section      603  tim.o(.constdata)
-    logo_mono_arr                            0x0800fa66   Data         525  tim.o(.constdata)
-    battery_mono_arr                         0x0800fc73   Data          60  tim.o(.constdata)
-    lightning_mono_arr                       0x0800fcaf   Data          16  tim.o(.constdata)
-    .conststring                             0x0800fcc0   Section      346  tft-menu.o(.conststring)
+    i.Mess_Menu_Draw                         0x08006244   Section        0  tft-menu.o(i.Mess_Menu_Draw)
+    i.Message_Menu_Item_Select               0x080062c8   Section        0  tft-menu.o(i.Message_Menu_Item_Select)
+    i.Message_Menu_Item_Unselect             0x0800632c   Section        0  tft-menu.o(i.Message_Menu_Item_Unselect)
+    i.Message_Menu_Navigation                0x08006388   Section        0  tft-menu.o(i.Message_Menu_Navigation)
+    i.Message_Read                           0x080069c4   Section        0  tft-menu.o(i.Message_Read)
+    i.Min_Plus                               0x08006a78   Section        0  tft-menu.o(i.Min_Plus)
+    i.Month_Plus                             0x08006b64   Section        0  tft-menu.o(i.Month_Plus)
+    i.Ot_ulybki                              0x08006c78   Section        0  alerts.o(i.Ot_ulybki)
+    i.RTC_GetDate                            0x08006cdc   Section        0  rtc.o(i.RTC_GetDate)
+    i.RTC_GetTime                            0x08006e40   Section        0  rtc.o(i.RTC_GetTime)
+    i.SPI1_Init                              0x08006f20   Section        0  spi.o(i.SPI1_Init)
+    i.SPI2_Init                              0x08006fb4   Section        0  spi.o(i.SPI2_Init)
+    i.SPI2_Send_Byte                         0x08007048   Section        0  spi.o(i.SPI2_Send_Byte)
+    i.ShowSignal                             0x08007070   Section        0  tft-menu.o(i.ShowSignal)
+    i.SystemInit                             0x080076c8   Section        0  system_stm32f0xx.o(i.SystemInit)
+    i.TFT_Draw_Image_Mono                    0x080076cc   Section        0  disp.o(i.TFT_Draw_Image_Mono)
+    i.TFT_Fill_Area                          0x0800777c   Section        0  disp.o(i.TFT_Fill_Area)
+    i.TFT_Fill_Color                         0x080077e4   Section        0  disp.o(i.TFT_Fill_Color)
+    i.TFT_Init                               0x08007834   Section        0  disp.o(i.TFT_Init)
+    i.TFT_Send_Char                          0x0800796c   Section        0  disp.o(i.TFT_Send_Char)
+    i.TFT_Send_Command                       0x08007a70   Section        0  disp.o(i.TFT_Send_Command)
+    i.TFT_Send_Data                          0x08007a7e   Section        0  disp.o(i.TFT_Send_Data)
+    i.TFT_Send_Str                           0x08007a8c   Section        0  disp.o(i.TFT_Send_Str)
+    i.TFT_Set_Area                           0x08007ae8   Section        0  disp.o(i.TFT_Set_Area)
+    i.TIM14_IRQHandler                       0x08007b60   Section        0  tim.o(i.TIM14_IRQHandler)
+    i.TIM14_Init                             0x08007e44   Section        0  tim.o(i.TIM14_Init)
+    i.TIM15_IRQHandler                       0x08007eb0   Section        0  tim.o(i.TIM15_IRQHandler)
+    i.TIM15_Init                             0x08007ef0   Section        0  tim.o(i.TIM15_Init)
+    i.TIM16_IRQHandler                       0x08007f60   Section        0  tim.o(i.TIM16_IRQHandler)
+    i.TIM16_Init                             0x08007fa0   Section        0  tim.o(i.TIM16_Init)
+    i.TIM17_IRQHandler                       0x08008010   Section        0  tim.o(i.TIM17_IRQHandler)
+    i.TIM17_Init                             0x080083c8   Section        0  tim.o(i.TIM17_Init)
+    i.TIM1_PWM_Init                          0x08008438   Section        0  tim.o(i.TIM1_PWM_Init)
+    i.TIM3_IRQHandler                        0x080084cc   Section        0  tim.o(i.TIM3_IRQHandler)
+    i.TIM3_Init                              0x080085dc   Section        0  tim.o(i.TIM3_Init)
+    i.TIM6_IRQHandler                        0x08008664   Section        0  tim.o(i.TIM6_IRQHandler)
+    i.TIM6_Init                              0x08008e0c   Section        0  tim.o(i.TIM6_Init)
+    i.WeekDay_Calc                           0x08008e78   Section        0  tft-menu.o(i.WeekDay_Calc)
+    i.Year_Plus                              0x08008f94   Section        0  tft-menu.o(i.Year_Plus)
+    i.__ARM_common_switch8                   0x080090a0   Section        0  chipcon.o(i.__ARM_common_switch8)
+    i.__NVIC_EnableIRQ                       0x080090bc   Section        0  tim.o(i.__NVIC_EnableIRQ)
+    __NVIC_EnableIRQ                         0x080090bd   Thumb Code    18  tim.o(i.__NVIC_EnableIRQ)
+    i.__NVIC_SetPriority                     0x080090d4   Section        0  adc.o(i.__NVIC_SetPriority)
+    __NVIC_SetPriority                       0x080090d5   Thumb Code   110  adc.o(i.__NVIC_SetPriority)
+    i.__NVIC_SetPriority                     0x0800914c   Section        0  tim.o(i.__NVIC_SetPriority)
+    __NVIC_SetPriority                       0x0800914d   Thumb Code   110  tim.o(i.__NVIC_SetPriority)
+    i._is_digit                              0x080091c4   Section        0  __printf_wp.o(i._is_digit)
+    i.cc2520osc_off                          0x080091d4   Section        0  chipcon.o(i.cc2520osc_off)
+    i.cc2520osc_on                           0x08009204   Section        0  chipcon.o(i.cc2520osc_on)
+    i.cc_init                                0x08009234   Section        0  chipcon.o(i.cc_init)
+    i.chk_header                             0x08009308   Section        0  chipcon.o(i.chk_header)
+    i.chl_load                               0x080093f0   Section        0  chipcon.o(i.chl_load)
+    i.data_read                              0x08009430   Section        0  chipcon.o(i.data_read)
+    i.data_write                             0x080094b0   Section        0  chipcon.o(i.data_write)
+    i.delay                                  0x08009554   Section        0  main.o(i.delay)
+    i.echo                                   0x08009574   Section        0  chipcon.o(i.echo)
+    i.get_pla                                0x08009580   Section        0  chipcon.o(i.get_pla)
+    i.goto_boot                              0x0800974c   Section        0  chipcon.o(i.goto_boot)
+    i.main                                   0x080098a4   Section        0  main.o(i.main)
+    i.play_note                              0x08009ae8   Section        0  alerts.o(i.play_note)
+    i.prg_off                                0x08009b58   Section        0  chipcon.o(i.prg_off)
+    i.prg_on                                 0x08009c08   Section        0  chipcon.o(i.prg_on)
+    i.program                                0x08009c68   Section        0  chipcon.o(i.program)
+    i.rbuf_get                               0x08009d28   Section        0  chipcon.o(i.rbuf_get)
+    i.readMEM                                0x08009dc8   Section        0  chipcon.o(i.readMEM)
+    i.send_PLA_CRC                           0x08009e04   Section        0  chipcon.o(i.send_PLA_CRC)
+    i.send_SOS_label                         0x08009f00   Section        0  chipcon.o(i.send_SOS_label)
+    i.send_ack                               0x08009f58   Section        0  chipcon.o(i.send_ack)
+    i.send_label                             0x08009ff4   Section        0  chipcon.o(i.send_label)
+    i.send_nack                              0x0800a048   Section        0  chipcon.o(i.send_nack)
+    i.spi1_write                             0x0800a078   Section        0  chipcon.o(i.spi1_write)
+    i.tbuf_load                              0x0800a0f0   Section        0  chipcon.o(i.tbuf_load)
+    i.tbuf_send                              0x0800a158   Section        0  chipcon.o(i.tbuf_send)
+    i.writeINS                               0x0800a1d4   Section        0  chipcon.o(i.writeINS)
+    i.writeMEM                               0x0800a204   Section        0  chipcon.o(i.writeMEM)
+    x$fpl$usenofp                            0x0800a242   Section        0  usenofp.o(x$fpl$usenofp)
+    .constdata                               0x0800a248   Section     1776  main.o(.constdata)
+    logo_mono_arr                            0x0800a248   Data         525  main.o(.constdata)
+    battery_mono_arr                         0x0800a455   Data          60  main.o(.constdata)
+    lightning_mono_arr                       0x0800a491   Data          16  main.o(.constdata)
+    fft_butterfly_arr                        0x0800a4a2   Data        1024  main.o(.constdata)
+    Re_arr                                   0x0800a8a8   Data          72  main.o(.constdata)
+    Im_arr                                   0x0800a8f0   Data          72  main.o(.constdata)
+    .constdata                               0x0800a938   Section    20497  fonts.o(.constdata)
+    .constdata                               0x0800f94c   Section      400  tft-menu.o(.constdata)
+    .constdata                               0x0800fadc   Section      603  tim.o(.constdata)
+    logo_mono_arr                            0x0800fade   Data         525  tim.o(.constdata)
+    battery_mono_arr                         0x0800fceb   Data          60  tim.o(.constdata)
+    lightning_mono_arr                       0x0800fd27   Data          16  tim.o(.constdata)
+    .conststring                             0x0800fd38   Section      346  tft-menu.o(.conststring)
     .VERS                                    0x200000c0   Section        6  chipcon.o(.VERS)
     version                                  0x200000c0   Data           6  chipcon.o(.VERS)
     .data                                    0x200000c6   Section        1  main.o(.data)
@@ -1514,93 +1516,93 @@ Image Symbol Table
     Menu_Item_Select                         0x08005ead   Thumb Code    74  tft-menu.o(i.Menu_Item_Select)
     Menu_Item_Unselect                       0x08005f05   Thumb Code    56  tft-menu.o(i.Menu_Item_Unselect)
     Menu_Up                                  0x08005f45   Thumb Code   480  tft-menu.o(i.Menu_Up)
-    MessRecToArch                            0x0800613d   Thumb Code   132  tft-menu.o(i.MessRecToArch)
-    Mess_Menu_Draw                           0x080061cd   Thumb Code   116  tft-menu.o(i.Mess_Menu_Draw)
-    Message_Menu_Item_Select                 0x08006251   Thumb Code    82  tft-menu.o(i.Message_Menu_Item_Select)
-    Message_Menu_Item_Unselect               0x080062b5   Thumb Code    78  tft-menu.o(i.Message_Menu_Item_Unselect)
-    Message_Menu_Navigation                  0x08006311   Thumb Code  1528  tft-menu.o(i.Message_Menu_Navigation)
-    Message_Read                             0x0800694d   Thumb Code   152  tft-menu.o(i.Message_Read)
-    Min_Plus                                 0x08006a01   Thumb Code   224  tft-menu.o(i.Min_Plus)
-    Month_Plus                               0x08006aed   Thumb Code   264  tft-menu.o(i.Month_Plus)
-    Ot_ulybki                                0x08006c01   Thumb Code    96  alerts.o(i.Ot_ulybki)
-    RTC_GetDate                              0x08006c65   Thumb Code   300  rtc.o(i.RTC_GetDate)
-    RTC_GetTime                              0x08006dc9   Thumb Code   198  rtc.o(i.RTC_GetTime)
-    SPI1_Init                                0x08006ea9   Thumb Code   136  spi.o(i.SPI1_Init)
-    SPI2_Init                                0x08006f3d   Thumb Code   126  spi.o(i.SPI2_Init)
-    SPI2_Send_Byte                           0x08006fd1   Thumb Code    36  spi.o(i.SPI2_Send_Byte)
-    ShowSignal                               0x08006ff9   Thumb Code  1550  tft-menu.o(i.ShowSignal)
-    SystemInit                               0x08007651   Thumb Code     2  system_stm32f0xx.o(i.SystemInit)
-    TFT_Draw_Image_Mono                      0x08007655   Thumb Code   170  disp.o(i.TFT_Draw_Image_Mono)
-    TFT_Fill_Area                            0x08007705   Thumb Code   100  disp.o(i.TFT_Fill_Area)
-    TFT_Fill_Color                           0x0800776d   Thumb Code    76  disp.o(i.TFT_Fill_Color)
-    TFT_Init                                 0x080077bd   Thumb Code   306  disp.o(i.TFT_Init)
-    TFT_Send_Char                            0x080078f5   Thumb Code   256  disp.o(i.TFT_Send_Char)
-    TFT_Send_Command                         0x080079f9   Thumb Code    14  disp.o(i.TFT_Send_Command)
-    TFT_Send_Data                            0x08007a07   Thumb Code    14  disp.o(i.TFT_Send_Data)
-    TFT_Send_Str                             0x08007a15   Thumb Code    90  disp.o(i.TFT_Send_Str)
-    TFT_Set_Area                             0x08007a71   Thumb Code   114  disp.o(i.TFT_Set_Area)
-    TIM14_IRQHandler                         0x08007ae9   Thumb Code   646  tim.o(i.TIM14_IRQHandler)
-    TIM14_Init                               0x08007dcd   Thumb Code    96  tim.o(i.TIM14_Init)
-    TIM15_IRQHandler                         0x08007e39   Thumb Code    48  tim.o(i.TIM15_IRQHandler)
-    TIM15_Init                               0x08007e79   Thumb Code    96  tim.o(i.TIM15_Init)
-    TIM16_IRQHandler                         0x08007ee9   Thumb Code    48  tim.o(i.TIM16_IRQHandler)
-    TIM16_Init                               0x08007f29   Thumb Code    96  tim.o(i.TIM16_Init)
-    TIM17_IRQHandler                         0x08007f99   Thumb Code   802  tim.o(i.TIM17_IRQHandler)
-    TIM17_Init                               0x08008351   Thumb Code    98  tim.o(i.TIM17_Init)
-    TIM1_PWM_Init                            0x080083c1   Thumb Code   136  tim.o(i.TIM1_PWM_Init)
-    TIM3_IRQHandler                          0x08008455   Thumb Code   220  tim.o(i.TIM3_IRQHandler)
-    TIM3_Init                                0x08008565   Thumb Code   114  tim.o(i.TIM3_Init)
-    TIM6_IRQHandler                          0x080085ed   Thumb Code  1846  tim.o(i.TIM6_IRQHandler)
-    TIM6_Init                                0x08008d95   Thumb Code    94  tim.o(i.TIM6_Init)
-    WeekDay_Calc                             0x08008e01   Thumb Code   262  tft-menu.o(i.WeekDay_Calc)
-    Year_Plus                                0x08008f1d   Thumb Code   254  tft-menu.o(i.Year_Plus)
-    __ARM_common_switch8                     0x08009029   Thumb Code    28  chipcon.o(i.__ARM_common_switch8)
-    _is_digit                                0x0800914d   Thumb Code    14  __printf_wp.o(i._is_digit)
-    cc2520osc_off                            0x0800915d   Thumb Code    44  chipcon.o(i.cc2520osc_off)
-    cc2520osc_on                             0x0800918d   Thumb Code    44  chipcon.o(i.cc2520osc_on)
-    cc_init                                  0x080091bd   Thumb Code   200  chipcon.o(i.cc_init)
-    chk_header                               0x08009291   Thumb Code   224  chipcon.o(i.chk_header)
-    chl_load                                 0x08009379   Thumb Code    58  chipcon.o(i.chl_load)
-    data_read                                0x080093b9   Thumb Code    88  chipcon.o(i.data_read)
-    data_write                               0x08009439   Thumb Code   120  chipcon.o(i.data_write)
-    delay                                    0x080094dd   Thumb Code    26  main.o(i.delay)
-    echo                                     0x080094fd   Thumb Code    12  chipcon.o(i.echo)
-    get_pla                                  0x08009509   Thumb Code   378  chipcon.o(i.get_pla)
-    goto_boot                                0x080096d5   Thumb Code   300  chipcon.o(i.goto_boot)
-    main                                     0x0800982d   Thumb Code   488  main.o(i.main)
-    play_note                                0x08009a71   Thumb Code   106  alerts.o(i.play_note)
-    prg_off                                  0x08009ae1   Thumb Code   126  chipcon.o(i.prg_off)
-    prg_on                                   0x08009b91   Thumb Code    72  chipcon.o(i.prg_on)
-    program                                  0x08009bf1   Thumb Code   166  chipcon.o(i.program)
-    rbuf_get                                 0x08009cb1   Thumb Code   156  chipcon.o(i.rbuf_get)
-    readMEM                                  0x08009d51   Thumb Code    60  chipcon.o(i.readMEM)
-    send_PLA_CRC                             0x08009d8d   Thumb Code   188  chipcon.o(i.send_PLA_CRC)
-    send_SOS_label                           0x08009e89   Thumb Code    76  chipcon.o(i.send_SOS_label)
-    send_ack                                 0x08009ee1   Thumb Code   126  chipcon.o(i.send_ack)
-    send_label                               0x08009f7d   Thumb Code    70  chipcon.o(i.send_label)
-    send_nack                                0x08009fd1   Thumb Code    38  chipcon.o(i.send_nack)
-    spi1_write                               0x0800a001   Thumb Code   112  chipcon.o(i.spi1_write)
-    tbuf_load                                0x0800a079   Thumb Code    98  chipcon.o(i.tbuf_load)
-    tbuf_send                                0x0800a0e1   Thumb Code   116  chipcon.o(i.tbuf_send)
-    writeINS                                 0x0800a15d   Thumb Code    48  chipcon.o(i.writeINS)
-    writeMEM                                 0x0800a18d   Thumb Code    62  chipcon.o(i.writeMEM)
-    __I$use$fp                               0x0800a1ca   Number         0  usenofp.o(x$fpl$usenofp)
-    Font6x8                                  0x0800a8c0   Data        2688  fonts.o(.constdata)
-    Font7x9                                  0x0800b340   Data        3024  fonts.o(.constdata)
-    Font11x18                                0x0800bf10   Data        6048  fonts.o(.constdata)
-    Font16x26                                0x0800d6b0   Data        8736  fonts.o(.constdata)
-    Font16x28                                0x0800f8d0   Data           0  fonts.o(.constdata)
-    menu_time                                0x0800f8d4   Data          80  tft-menu.o(.constdata)
-    menu_mess                                0x0800f924   Data          32  tft-menu.o(.constdata)
-    menu_autolock                            0x0800f944   Data          32  tft-menu.o(.constdata)
-    menu_autosleep_time                      0x0800f964   Data          16  tft-menu.o(.constdata)
-    menu_inversion                           0x0800f974   Data          32  tft-menu.o(.constdata)
-    menu_brightness                          0x0800f994   Data          32  tft-menu.o(.constdata)
-    menu_settings                            0x0800f9b4   Data          80  tft-menu.o(.constdata)
-    menu_main                                0x0800fa04   Data          96  tft-menu.o(.constdata)
-    dv                                       0x0800fa64   Data           2  tim.o(.constdata)
-    Region$$Table$$Base                      0x0800fe1c   Number         0  anon$$obj.o(Region$$Table)
-    Region$$Table$$Limit                     0x0800fe3c   Number         0  anon$$obj.o(Region$$Table)
+    MessRecToArch                            0x0800613d   Thumb Code   238  tft-menu.o(i.MessRecToArch)
+    Mess_Menu_Draw                           0x08006245   Thumb Code   116  tft-menu.o(i.Mess_Menu_Draw)
+    Message_Menu_Item_Select                 0x080062c9   Thumb Code    82  tft-menu.o(i.Message_Menu_Item_Select)
+    Message_Menu_Item_Unselect               0x0800632d   Thumb Code    78  tft-menu.o(i.Message_Menu_Item_Unselect)
+    Message_Menu_Navigation                  0x08006389   Thumb Code  1528  tft-menu.o(i.Message_Menu_Navigation)
+    Message_Read                             0x080069c5   Thumb Code   152  tft-menu.o(i.Message_Read)
+    Min_Plus                                 0x08006a79   Thumb Code   224  tft-menu.o(i.Min_Plus)
+    Month_Plus                               0x08006b65   Thumb Code   264  tft-menu.o(i.Month_Plus)
+    Ot_ulybki                                0x08006c79   Thumb Code    96  alerts.o(i.Ot_ulybki)
+    RTC_GetDate                              0x08006cdd   Thumb Code   300  rtc.o(i.RTC_GetDate)
+    RTC_GetTime                              0x08006e41   Thumb Code   198  rtc.o(i.RTC_GetTime)
+    SPI1_Init                                0x08006f21   Thumb Code   136  spi.o(i.SPI1_Init)
+    SPI2_Init                                0x08006fb5   Thumb Code   126  spi.o(i.SPI2_Init)
+    SPI2_Send_Byte                           0x08007049   Thumb Code    36  spi.o(i.SPI2_Send_Byte)
+    ShowSignal                               0x08007071   Thumb Code  1550  tft-menu.o(i.ShowSignal)
+    SystemInit                               0x080076c9   Thumb Code     2  system_stm32f0xx.o(i.SystemInit)
+    TFT_Draw_Image_Mono                      0x080076cd   Thumb Code   170  disp.o(i.TFT_Draw_Image_Mono)
+    TFT_Fill_Area                            0x0800777d   Thumb Code   100  disp.o(i.TFT_Fill_Area)
+    TFT_Fill_Color                           0x080077e5   Thumb Code    76  disp.o(i.TFT_Fill_Color)
+    TFT_Init                                 0x08007835   Thumb Code   306  disp.o(i.TFT_Init)
+    TFT_Send_Char                            0x0800796d   Thumb Code   256  disp.o(i.TFT_Send_Char)
+    TFT_Send_Command                         0x08007a71   Thumb Code    14  disp.o(i.TFT_Send_Command)
+    TFT_Send_Data                            0x08007a7f   Thumb Code    14  disp.o(i.TFT_Send_Data)
+    TFT_Send_Str                             0x08007a8d   Thumb Code    90  disp.o(i.TFT_Send_Str)
+    TFT_Set_Area                             0x08007ae9   Thumb Code   114  disp.o(i.TFT_Set_Area)
+    TIM14_IRQHandler                         0x08007b61   Thumb Code   646  tim.o(i.TIM14_IRQHandler)
+    TIM14_Init                               0x08007e45   Thumb Code    96  tim.o(i.TIM14_Init)
+    TIM15_IRQHandler                         0x08007eb1   Thumb Code    48  tim.o(i.TIM15_IRQHandler)
+    TIM15_Init                               0x08007ef1   Thumb Code    96  tim.o(i.TIM15_Init)
+    TIM16_IRQHandler                         0x08007f61   Thumb Code    48  tim.o(i.TIM16_IRQHandler)
+    TIM16_Init                               0x08007fa1   Thumb Code    96  tim.o(i.TIM16_Init)
+    TIM17_IRQHandler                         0x08008011   Thumb Code   802  tim.o(i.TIM17_IRQHandler)
+    TIM17_Init                               0x080083c9   Thumb Code    98  tim.o(i.TIM17_Init)
+    TIM1_PWM_Init                            0x08008439   Thumb Code   136  tim.o(i.TIM1_PWM_Init)
+    TIM3_IRQHandler                          0x080084cd   Thumb Code   220  tim.o(i.TIM3_IRQHandler)
+    TIM3_Init                                0x080085dd   Thumb Code   114  tim.o(i.TIM3_Init)
+    TIM6_IRQHandler                          0x08008665   Thumb Code  1846  tim.o(i.TIM6_IRQHandler)
+    TIM6_Init                                0x08008e0d   Thumb Code    94  tim.o(i.TIM6_Init)
+    WeekDay_Calc                             0x08008e79   Thumb Code   262  tft-menu.o(i.WeekDay_Calc)
+    Year_Plus                                0x08008f95   Thumb Code   254  tft-menu.o(i.Year_Plus)
+    __ARM_common_switch8                     0x080090a1   Thumb Code    28  chipcon.o(i.__ARM_common_switch8)
+    _is_digit                                0x080091c5   Thumb Code    14  __printf_wp.o(i._is_digit)
+    cc2520osc_off                            0x080091d5   Thumb Code    44  chipcon.o(i.cc2520osc_off)
+    cc2520osc_on                             0x08009205   Thumb Code    44  chipcon.o(i.cc2520osc_on)
+    cc_init                                  0x08009235   Thumb Code   200  chipcon.o(i.cc_init)
+    chk_header                               0x08009309   Thumb Code   224  chipcon.o(i.chk_header)
+    chl_load                                 0x080093f1   Thumb Code    58  chipcon.o(i.chl_load)
+    data_read                                0x08009431   Thumb Code    88  chipcon.o(i.data_read)
+    data_write                               0x080094b1   Thumb Code   120  chipcon.o(i.data_write)
+    delay                                    0x08009555   Thumb Code    26  main.o(i.delay)
+    echo                                     0x08009575   Thumb Code    12  chipcon.o(i.echo)
+    get_pla                                  0x08009581   Thumb Code   378  chipcon.o(i.get_pla)
+    goto_boot                                0x0800974d   Thumb Code   300  chipcon.o(i.goto_boot)
+    main                                     0x080098a5   Thumb Code   488  main.o(i.main)
+    play_note                                0x08009ae9   Thumb Code   106  alerts.o(i.play_note)
+    prg_off                                  0x08009b59   Thumb Code   126  chipcon.o(i.prg_off)
+    prg_on                                   0x08009c09   Thumb Code    72  chipcon.o(i.prg_on)
+    program                                  0x08009c69   Thumb Code   166  chipcon.o(i.program)
+    rbuf_get                                 0x08009d29   Thumb Code   156  chipcon.o(i.rbuf_get)
+    readMEM                                  0x08009dc9   Thumb Code    60  chipcon.o(i.readMEM)
+    send_PLA_CRC                             0x08009e05   Thumb Code   188  chipcon.o(i.send_PLA_CRC)
+    send_SOS_label                           0x08009f01   Thumb Code    76  chipcon.o(i.send_SOS_label)
+    send_ack                                 0x08009f59   Thumb Code   126  chipcon.o(i.send_ack)
+    send_label                               0x08009ff5   Thumb Code    70  chipcon.o(i.send_label)
+    send_nack                                0x0800a049   Thumb Code    38  chipcon.o(i.send_nack)
+    spi1_write                               0x0800a079   Thumb Code   112  chipcon.o(i.spi1_write)
+    tbuf_load                                0x0800a0f1   Thumb Code    98  chipcon.o(i.tbuf_load)
+    tbuf_send                                0x0800a159   Thumb Code   116  chipcon.o(i.tbuf_send)
+    writeINS                                 0x0800a1d5   Thumb Code    48  chipcon.o(i.writeINS)
+    writeMEM                                 0x0800a205   Thumb Code    62  chipcon.o(i.writeMEM)
+    __I$use$fp                               0x0800a242   Number         0  usenofp.o(x$fpl$usenofp)
+    Font6x8                                  0x0800a938   Data        2688  fonts.o(.constdata)
+    Font7x9                                  0x0800b3b8   Data        3024  fonts.o(.constdata)
+    Font11x18                                0x0800bf88   Data        6048  fonts.o(.constdata)
+    Font16x26                                0x0800d728   Data        8736  fonts.o(.constdata)
+    Font16x28                                0x0800f948   Data           0  fonts.o(.constdata)
+    menu_time                                0x0800f94c   Data          80  tft-menu.o(.constdata)
+    menu_mess                                0x0800f99c   Data          32  tft-menu.o(.constdata)
+    menu_autolock                            0x0800f9bc   Data          32  tft-menu.o(.constdata)
+    menu_autosleep_time                      0x0800f9dc   Data          16  tft-menu.o(.constdata)
+    menu_inversion                           0x0800f9ec   Data          32  tft-menu.o(.constdata)
+    menu_brightness                          0x0800fa0c   Data          32  tft-menu.o(.constdata)
+    menu_settings                            0x0800fa2c   Data          80  tft-menu.o(.constdata)
+    menu_main                                0x0800fa7c   Data          96  tft-menu.o(.constdata)
+    dv                                       0x0800fadc   Data           2  tim.o(.constdata)
+    Region$$Table$$Base                      0x0800fe94   Number         0  anon$$obj.o(Region$$Table)
+    Region$$Table$$Limit                     0x0800feb4   Number         0  anon$$obj.o(Region$$Table)
     wait_to_sleep                            0x200000c6   Data           1  main.o(.data)
     adc                                      0x200000c8   Data           6  adc.o(.data)
     current_eeprom_pos                       0x200000d0   Data           2  chipcon.o(.data)
@@ -1763,9 +1765,9 @@ Memory Map of the image
 
   Image Entry point : 0x080040b5
 
-  Load Region LR_IROM1 (Base: 0x08004000, Size: 0x0000bfec, Max: 0x0001c000, ABSOLUTE, COMPRESSED[0x0000bed8])
+  Load Region LR_IROM1 (Base: 0x08004000, Size: 0x0000c064, Max: 0x0001c000, ABSOLUTE, COMPRESSED[0x0000bf50])
 
-    Execution Region ER_IROM1 (Exec base: 0x08004000, Load base: 0x08004000, Size: 0x0000be3c, Max: 0x0001c000, ABSOLUTE)
+    Execution Region ER_IROM1 (Exec base: 0x08004000, Load base: 0x08004000, Size: 0x0000beb4, Max: 0x0001c000, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
@@ -1886,96 +1888,96 @@ Memory Map of the image
     0x08005eac   0x08005eac   0x00000058   Code   RO         1106    i.Menu_Item_Select  tft-menu.o
     0x08005f04   0x08005f04   0x00000040   Code   RO         1107    i.Menu_Item_Unselect  tft-menu.o
     0x08005f44   0x08005f44   0x000001f8   Code   RO         1185    i.Menu_Up           tft-menu.o
-    0x0800613c   0x0800613c   0x00000090   Code   RO         1108    i.MessRecToArch     tft-menu.o
-    0x080061cc   0x080061cc   0x00000084   Code   RO         1109    i.Mess_Menu_Draw    tft-menu.o
-    0x08006250   0x08006250   0x00000064   Code   RO         1110    i.Message_Menu_Item_Select  tft-menu.o
-    0x080062b4   0x080062b4   0x0000005c   Code   RO         1111    i.Message_Menu_Item_Unselect  tft-menu.o
-    0x08006310   0x08006310   0x0000063c   Code   RO         1173    i.Message_Menu_Navigation  tft-menu.o
-    0x0800694c   0x0800694c   0x000000b4   Code   RO         1112    i.Message_Read      tft-menu.o
-    0x08006a00   0x08006a00   0x000000ec   Code   RO         1197    i.Min_Plus          tft-menu.o
-    0x08006aec   0x08006aec   0x00000114   Code   RO         1215    i.Month_Plus        tft-menu.o
-    0x08006c00   0x08006c00   0x00000064   Code   RO          213    i.Ot_ulybki         alerts.o
-    0x08006c64   0x08006c64   0x00000164   Code   RO         1024    i.RTC_GetDate       rtc.o
-    0x08006dc8   0x08006dc8   0x000000e0   Code   RO         1025    i.RTC_GetTime       rtc.o
-    0x08006ea8   0x08006ea8   0x00000094   Code   RO         1066    i.SPI1_Init         spi.o
-    0x08006f3c   0x08006f3c   0x00000094   Code   RO         1067    i.SPI2_Init         spi.o
-    0x08006fd0   0x08006fd0   0x00000028   Code   RO         1068    i.SPI2_Send_Byte    spi.o
-    0x08006ff8   0x08006ff8   0x00000658   Code   RO         1227    i.ShowSignal        tft-menu.o
-    0x08007650   0x08007650   0x00000002   Code   RO         1383    i.SystemInit        system_stm32f0xx.o
-    0x08007652   0x08007652   0x00000002   PAD
-    0x08007654   0x08007654   0x000000b0   Code   RO          594    i.TFT_Draw_Image_Mono  disp.o
-    0x08007704   0x08007704   0x00000068   Code   RO          595    i.TFT_Fill_Area     disp.o
-    0x0800776c   0x0800776c   0x00000050   Code   RO          596    i.TFT_Fill_Color    disp.o
-    0x080077bc   0x080077bc   0x00000138   Code   RO          597    i.TFT_Init          disp.o
-    0x080078f4   0x080078f4   0x00000104   Code   RO          598    i.TFT_Send_Char     disp.o
-    0x080079f8   0x080079f8   0x0000000e   Code   RO          599    i.TFT_Send_Command  disp.o
-    0x08007a06   0x08007a06   0x0000000e   Code   RO          600    i.TFT_Send_Data     disp.o
-    0x08007a14   0x08007a14   0x0000005a   Code   RO          602    i.TFT_Send_Str      disp.o
-    0x08007a6e   0x08007a6e   0x00000002   PAD
-    0x08007a70   0x08007a70   0x00000078   Code   RO          603    i.TFT_Set_Area      disp.o
-    0x08007ae8   0x08007ae8   0x000002e4   Code   RO         1250    i.TIM14_IRQHandler  tim.o
-    0x08007dcc   0x08007dcc   0x0000006c   Code   RO         1251    i.TIM14_Init        tim.o
-    0x08007e38   0x08007e38   0x00000040   Code   RO         1252    i.TIM15_IRQHandler  tim.o
-    0x08007e78   0x08007e78   0x00000070   Code   RO         1253    i.TIM15_Init        tim.o
-    0x08007ee8   0x08007ee8   0x00000040   Code   RO         1254    i.TIM16_IRQHandler  tim.o
-    0x08007f28   0x08007f28   0x00000070   Code   RO         1255    i.TIM16_Init        tim.o
-    0x08007f98   0x08007f98   0x000003b8   Code   RO         1256    i.TIM17_IRQHandler  tim.o
-    0x08008350   0x08008350   0x00000070   Code   RO         1257    i.TIM17_Init        tim.o
-    0x080083c0   0x080083c0   0x00000094   Code   RO         1258    i.TIM1_PWM_Init     tim.o
-    0x08008454   0x08008454   0x00000110   Code   RO         1259    i.TIM3_IRQHandler   tim.o
-    0x08008564   0x08008564   0x00000088   Code   RO         1260    i.TIM3_Init         tim.o
-    0x080085ec   0x080085ec   0x000007a8   Code   RO         1261    i.TIM6_IRQHandler   tim.o
-    0x08008d94   0x08008d94   0x0000006c   Code   RO         1262    i.TIM6_Init         tim.o
-    0x08008e00   0x08008e00   0x0000011c   Code   RO         1203    i.WeekDay_Calc      tft-menu.o
-    0x08008f1c   0x08008f1c   0x0000010c   Code   RO         1221    i.Year_Plus         tft-menu.o
-    0x08009028   0x08009028   0x0000001c   Code   RO          508    i.__ARM_common_switch8  chipcon.o
-    0x08009044   0x08009044   0x00000018   Code   RO         1263    i.__NVIC_EnableIRQ  tim.o
-    0x0800905c   0x0800905c   0x00000078   Code   RO          144    i.__NVIC_SetPriority  adc.o
-    0x080090d4   0x080090d4   0x00000078   Code   RO         1264    i.__NVIC_SetPriority  tim.o
-    0x0800914c   0x0800914c   0x0000000e   Code   RO         1504    i._is_digit         c_p.l(__printf_wp.o)
-    0x0800915a   0x0800915a   0x00000002   PAD
-    0x0800915c   0x0800915c   0x00000030   Code   RO          332    i.cc2520osc_off     chipcon.o
-    0x0800918c   0x0800918c   0x00000030   Code   RO          333    i.cc2520osc_on      chipcon.o
-    0x080091bc   0x080091bc   0x000000d4   Code   RO          334    i.cc_init           chipcon.o
-    0x08009290   0x08009290   0x000000e8   Code   RO          335    i.chk_header        chipcon.o
-    0x08009378   0x08009378   0x00000040   Code   RO          336    i.chl_load          chipcon.o
-    0x080093b8   0x080093b8   0x00000080   Code   RO          337    i.data_read         chipcon.o
-    0x08009438   0x08009438   0x000000a4   Code   RO          338    i.data_write        chipcon.o
-    0x080094dc   0x080094dc   0x00000020   Code   RO            4    i.delay             main.o
-    0x080094fc   0x080094fc   0x0000000c   Code   RO          339    i.echo              chipcon.o
-    0x08009508   0x08009508   0x000001cc   Code   RO          340    i.get_pla           chipcon.o
-    0x080096d4   0x080096d4   0x00000158   Code   RO          341    i.goto_boot         chipcon.o
-    0x0800982c   0x0800982c   0x00000244   Code   RO            5    i.main              main.o
-    0x08009a70   0x08009a70   0x00000070   Code   RO          214    i.play_note         alerts.o
-    0x08009ae0   0x08009ae0   0x000000b0   Code   RO          342    i.prg_off           chipcon.o
-    0x08009b90   0x08009b90   0x00000060   Code   RO          343    i.prg_on            chipcon.o
-    0x08009bf0   0x08009bf0   0x000000c0   Code   RO          344    i.program           chipcon.o
-    0x08009cb0   0x08009cb0   0x000000a0   Code   RO          345    i.rbuf_get          chipcon.o
-    0x08009d50   0x08009d50   0x0000003c   Code   RO          346    i.readMEM           chipcon.o
-    0x08009d8c   0x08009d8c   0x000000fc   Code   RO          348    i.send_PLA_CRC      chipcon.o
-    0x08009e88   0x08009e88   0x00000058   Code   RO          349    i.send_SOS_label    chipcon.o
-    0x08009ee0   0x08009ee0   0x0000009c   Code   RO          350    i.send_ack          chipcon.o
-    0x08009f7c   0x08009f7c   0x00000054   Code   RO          351    i.send_label        chipcon.o
-    0x08009fd0   0x08009fd0   0x00000030   Code   RO          352    i.send_nack         chipcon.o
-    0x0800a000   0x0800a000   0x00000078   Code   RO          354    i.spi1_write        chipcon.o
-    0x0800a078   0x0800a078   0x00000068   Code   RO          355    i.tbuf_load         chipcon.o
-    0x0800a0e0   0x0800a0e0   0x0000007c   Code   RO          356    i.tbuf_send         chipcon.o
-    0x0800a15c   0x0800a15c   0x00000030   Code   RO          357    i.writeINS          chipcon.o
-    0x0800a18c   0x0800a18c   0x0000003e   Code   RO          358    i.writeMEM          chipcon.o
-    0x0800a1ca   0x0800a1ca   0x00000000   Code   RO         1653    x$fpl$usenofp       fz_ps.l(usenofp.o)
-    0x0800a1ca   0x0800a1ca   0x00000006   PAD
-    0x0800a1d0   0x0800a1d0   0x000006f0   Data   RO            6    .constdata          main.o
-    0x0800a8c0   0x0800a8c0   0x00005011   Data   RO          865    .constdata          fonts.o
-    0x0800f8d1   0x0800f8d1   0x00000003   PAD
-    0x0800f8d4   0x0800f8d4   0x00000190   Data   RO         1114    .constdata          tft-menu.o
-    0x0800fa64   0x0800fa64   0x0000025b   Data   RO         1266    .constdata          tim.o
-    0x0800fcbf   0x0800fcbf   0x00000001   PAD
-    0x0800fcc0   0x0800fcc0   0x0000015a   Data   RO         1115    .conststring        tft-menu.o
-    0x0800fe1a   0x0800fe1a   0x00000002   PAD
-    0x0800fe1c   0x0800fe1c   0x00000020   Data   RO         1831    Region$$Table       anon$$obj.o
+    0x0800613c   0x0800613c   0x00000108   Code   RO         1108    i.MessRecToArch     tft-menu.o
+    0x08006244   0x08006244   0x00000084   Code   RO         1109    i.Mess_Menu_Draw    tft-menu.o
+    0x080062c8   0x080062c8   0x00000064   Code   RO         1110    i.Message_Menu_Item_Select  tft-menu.o
+    0x0800632c   0x0800632c   0x0000005c   Code   RO         1111    i.Message_Menu_Item_Unselect  tft-menu.o
+    0x08006388   0x08006388   0x0000063c   Code   RO         1173    i.Message_Menu_Navigation  tft-menu.o
+    0x080069c4   0x080069c4   0x000000b4   Code   RO         1112    i.Message_Read      tft-menu.o
+    0x08006a78   0x08006a78   0x000000ec   Code   RO         1197    i.Min_Plus          tft-menu.o
+    0x08006b64   0x08006b64   0x00000114   Code   RO         1215    i.Month_Plus        tft-menu.o
+    0x08006c78   0x08006c78   0x00000064   Code   RO          213    i.Ot_ulybki         alerts.o
+    0x08006cdc   0x08006cdc   0x00000164   Code   RO         1024    i.RTC_GetDate       rtc.o
+    0x08006e40   0x08006e40   0x000000e0   Code   RO         1025    i.RTC_GetTime       rtc.o
+    0x08006f20   0x08006f20   0x00000094   Code   RO         1066    i.SPI1_Init         spi.o
+    0x08006fb4   0x08006fb4   0x00000094   Code   RO         1067    i.SPI2_Init         spi.o
+    0x08007048   0x08007048   0x00000028   Code   RO         1068    i.SPI2_Send_Byte    spi.o
+    0x08007070   0x08007070   0x00000658   Code   RO         1227    i.ShowSignal        tft-menu.o
+    0x080076c8   0x080076c8   0x00000002   Code   RO         1383    i.SystemInit        system_stm32f0xx.o
+    0x080076ca   0x080076ca   0x00000002   PAD
+    0x080076cc   0x080076cc   0x000000b0   Code   RO          594    i.TFT_Draw_Image_Mono  disp.o
+    0x0800777c   0x0800777c   0x00000068   Code   RO          595    i.TFT_Fill_Area     disp.o
+    0x080077e4   0x080077e4   0x00000050   Code   RO          596    i.TFT_Fill_Color    disp.o
+    0x08007834   0x08007834   0x00000138   Code   RO          597    i.TFT_Init          disp.o
+    0x0800796c   0x0800796c   0x00000104   Code   RO          598    i.TFT_Send_Char     disp.o
+    0x08007a70   0x08007a70   0x0000000e   Code   RO          599    i.TFT_Send_Command  disp.o
+    0x08007a7e   0x08007a7e   0x0000000e   Code   RO          600    i.TFT_Send_Data     disp.o
+    0x08007a8c   0x08007a8c   0x0000005a   Code   RO          602    i.TFT_Send_Str      disp.o
+    0x08007ae6   0x08007ae6   0x00000002   PAD
+    0x08007ae8   0x08007ae8   0x00000078   Code   RO          603    i.TFT_Set_Area      disp.o
+    0x08007b60   0x08007b60   0x000002e4   Code   RO         1250    i.TIM14_IRQHandler  tim.o
+    0x08007e44   0x08007e44   0x0000006c   Code   RO         1251    i.TIM14_Init        tim.o
+    0x08007eb0   0x08007eb0   0x00000040   Code   RO         1252    i.TIM15_IRQHandler  tim.o
+    0x08007ef0   0x08007ef0   0x00000070   Code   RO         1253    i.TIM15_Init        tim.o
+    0x08007f60   0x08007f60   0x00000040   Code   RO         1254    i.TIM16_IRQHandler  tim.o
+    0x08007fa0   0x08007fa0   0x00000070   Code   RO         1255    i.TIM16_Init        tim.o
+    0x08008010   0x08008010   0x000003b8   Code   RO         1256    i.TIM17_IRQHandler  tim.o
+    0x080083c8   0x080083c8   0x00000070   Code   RO         1257    i.TIM17_Init        tim.o
+    0x08008438   0x08008438   0x00000094   Code   RO         1258    i.TIM1_PWM_Init     tim.o
+    0x080084cc   0x080084cc   0x00000110   Code   RO         1259    i.TIM3_IRQHandler   tim.o
+    0x080085dc   0x080085dc   0x00000088   Code   RO         1260    i.TIM3_Init         tim.o
+    0x08008664   0x08008664   0x000007a8   Code   RO         1261    i.TIM6_IRQHandler   tim.o
+    0x08008e0c   0x08008e0c   0x0000006c   Code   RO         1262    i.TIM6_Init         tim.o
+    0x08008e78   0x08008e78   0x0000011c   Code   RO         1203    i.WeekDay_Calc      tft-menu.o
+    0x08008f94   0x08008f94   0x0000010c   Code   RO         1221    i.Year_Plus         tft-menu.o
+    0x080090a0   0x080090a0   0x0000001c   Code   RO          508    i.__ARM_common_switch8  chipcon.o
+    0x080090bc   0x080090bc   0x00000018   Code   RO         1263    i.__NVIC_EnableIRQ  tim.o
+    0x080090d4   0x080090d4   0x00000078   Code   RO          144    i.__NVIC_SetPriority  adc.o
+    0x0800914c   0x0800914c   0x00000078   Code   RO         1264    i.__NVIC_SetPriority  tim.o
+    0x080091c4   0x080091c4   0x0000000e   Code   RO         1504    i._is_digit         c_p.l(__printf_wp.o)
+    0x080091d2   0x080091d2   0x00000002   PAD
+    0x080091d4   0x080091d4   0x00000030   Code   RO          332    i.cc2520osc_off     chipcon.o
+    0x08009204   0x08009204   0x00000030   Code   RO          333    i.cc2520osc_on      chipcon.o
+    0x08009234   0x08009234   0x000000d4   Code   RO          334    i.cc_init           chipcon.o
+    0x08009308   0x08009308   0x000000e8   Code   RO          335    i.chk_header        chipcon.o
+    0x080093f0   0x080093f0   0x00000040   Code   RO          336    i.chl_load          chipcon.o
+    0x08009430   0x08009430   0x00000080   Code   RO          337    i.data_read         chipcon.o
+    0x080094b0   0x080094b0   0x000000a4   Code   RO          338    i.data_write        chipcon.o
+    0x08009554   0x08009554   0x00000020   Code   RO            4    i.delay             main.o
+    0x08009574   0x08009574   0x0000000c   Code   RO          339    i.echo              chipcon.o
+    0x08009580   0x08009580   0x000001cc   Code   RO          340    i.get_pla           chipcon.o
+    0x0800974c   0x0800974c   0x00000158   Code   RO          341    i.goto_boot         chipcon.o
+    0x080098a4   0x080098a4   0x00000244   Code   RO            5    i.main              main.o
+    0x08009ae8   0x08009ae8   0x00000070   Code   RO          214    i.play_note         alerts.o
+    0x08009b58   0x08009b58   0x000000b0   Code   RO          342    i.prg_off           chipcon.o
+    0x08009c08   0x08009c08   0x00000060   Code   RO          343    i.prg_on            chipcon.o
+    0x08009c68   0x08009c68   0x000000c0   Code   RO          344    i.program           chipcon.o
+    0x08009d28   0x08009d28   0x000000a0   Code   RO          345    i.rbuf_get          chipcon.o
+    0x08009dc8   0x08009dc8   0x0000003c   Code   RO          346    i.readMEM           chipcon.o
+    0x08009e04   0x08009e04   0x000000fc   Code   RO          348    i.send_PLA_CRC      chipcon.o
+    0x08009f00   0x08009f00   0x00000058   Code   RO          349    i.send_SOS_label    chipcon.o
+    0x08009f58   0x08009f58   0x0000009c   Code   RO          350    i.send_ack          chipcon.o
+    0x08009ff4   0x08009ff4   0x00000054   Code   RO          351    i.send_label        chipcon.o
+    0x0800a048   0x0800a048   0x00000030   Code   RO          352    i.send_nack         chipcon.o
+    0x0800a078   0x0800a078   0x00000078   Code   RO          354    i.spi1_write        chipcon.o
+    0x0800a0f0   0x0800a0f0   0x00000068   Code   RO          355    i.tbuf_load         chipcon.o
+    0x0800a158   0x0800a158   0x0000007c   Code   RO          356    i.tbuf_send         chipcon.o
+    0x0800a1d4   0x0800a1d4   0x00000030   Code   RO          357    i.writeINS          chipcon.o
+    0x0800a204   0x0800a204   0x0000003e   Code   RO          358    i.writeMEM          chipcon.o
+    0x0800a242   0x0800a242   0x00000000   Code   RO         1653    x$fpl$usenofp       fz_ps.l(usenofp.o)
+    0x0800a242   0x0800a242   0x00000006   PAD
+    0x0800a248   0x0800a248   0x000006f0   Data   RO            6    .constdata          main.o
+    0x0800a938   0x0800a938   0x00005011   Data   RO          865    .constdata          fonts.o
+    0x0800f949   0x0800f949   0x00000003   PAD
+    0x0800f94c   0x0800f94c   0x00000190   Data   RO         1114    .constdata          tft-menu.o
+    0x0800fadc   0x0800fadc   0x0000025b   Data   RO         1266    .constdata          tim.o
+    0x0800fd37   0x0800fd37   0x00000001   PAD
+    0x0800fd38   0x0800fd38   0x0000015a   Data   RO         1115    .conststring        tft-menu.o
+    0x0800fe92   0x0800fe92   0x00000002   PAD
+    0x0800fe94   0x0800fe94   0x00000020   Data   RO         1831    Region$$Table       anon$$obj.o
 
 
-    Execution Region RW_IRAM1 (Exec base: 0x200000c0, Load base: 0x0800fe3c, Size: 0x00000a78, Max: 0x00008000, ABSOLUTE, COMPRESSED[0x0000009c])
+    Execution Region RW_IRAM1 (Exec base: 0x200000c0, Load base: 0x0800feb4, Size: 0x00000a78, Max: 0x00008000, ABSOLUTE, COMPRESSED[0x0000009c])
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
@@ -2027,11 +2029,11 @@ Image component sizes
        336         38          0          0          0       1249   spi.o
         56         26        180          0       1536        580   startup_stm32f030x8.o
          2          0          0          4          0       1255   system_stm32f0xx.o
-      6836        578        746         44        128      14641   tft-menu.o
+      6956        592        746         44        128      14809   tft-menu.o
       5032        760        603        206         38      22341   tim.o
 
     ----------------------------------------------------------------------
-     21350       2444      23840        432       2152     288261   Object Totals
+     21470       2458      23840        432       2152     288429   Object Totals
          0          0         32          0          0          0   (incl. Generated)
         10          0          6          6          2          0   (incl. Padding)
 
@@ -2103,15 +2105,15 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-     24860       2550      23840        432       2248     285113   Grand Totals
-     24860       2550      23840        156       2248     285113   ELF Image Totals (compressed)
-     24860       2550      23840        156          0          0   ROM Totals
+     24980       2564      23840        432       2248     285281   Grand Totals
+     24980       2564      23840        156       2248     285281   ELF Image Totals (compressed)
+     24980       2564      23840        156          0          0   ROM Totals
 
 ==============================================================================
 
-    Total RO  Size (Code + RO Data)                48700 (  47.56kB)
+    Total RO  Size (Code + RO Data)                48820 (  47.68kB)
     Total RW  Size (RW Data + ZI Data)              2680 (   2.62kB)
-    Total ROM Size (Code + RO Data + RW Data)      48856 (  47.71kB)
+    Total ROM Size (Code + RO Data + RW Data)      48976 (  47.83kB)
 
 ==============================================================================
 

@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Objects\1.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\1.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Fri Nov 14 15:01:17 2025
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Mon Nov 17 15:18:25 2025
 <BR><P>
 <H3>Maximum Stack Usage =        888 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -699,6 +699,7 @@ Global Symbols
 </UL>
 <BR>[Called By]<UL><LI><a href="#[75]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FLASH_WriteStr_PLA
 <LI><a href="#[74]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FLASH_WriteStr
+<LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MessRecToArch
 <LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FLASH_WriteByte
 </UL>
 
@@ -728,6 +729,7 @@ Global Symbols
 <LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Message_Menu_Item_Unselect
 <LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Message_Menu_Item_Select
 <LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Mess_Menu_Draw
+<LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MessRecToArch
 <LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FLASH_WriteByte
 </UL>
 
@@ -853,15 +855,17 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[22]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM6_IRQHandler
 </UL>
 
-<P><STRONG><a name="[7f]"></a>MessRecToArch</STRONG> (Thumb, 132 bytes, Stack size 144 bytes, tft-menu.o(i.MessRecToArch))
+<P><STRONG><a name="[7f]"></a>MessRecToArch</STRONG> (Thumb, 238 bytes, Stack size 144 bytes, tft-menu.o(i.MessRecToArch))
 <BR><BR>[Stack]<UL><LI>Max Depth = 704 + Unknown Stack Size
 <LI>Call Chain = MessRecToArch &rArr; FLASH_WriteByte &rArr; FLASH_WriteStr &rArr; FLASH_ReadStr
 </UL>
 <BR>[Calls]<UL><LI><a href="#[75]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FLASH_WriteStr_PLA
+<LI><a href="#[73]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FLASH_ReadStr
 <LI><a href="#[63]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FLASH_ReadByte
 <LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RTC_GetTime
 <LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RTC_GetDate
 <LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FLASH_WriteByte
+<LI><a href="#[6e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FLASH_PageErase
 <LI><a href="#[72]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memclr4
 <LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;strcat
 <LI><a href="#[7b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;strlen

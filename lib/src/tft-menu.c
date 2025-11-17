@@ -536,15 +536,30 @@ extern uint32_t recw1, recw2;
 
 void MessRecToArch(char* data){
 	char tmp_str[MESS_MAX_SIZE] = {0,};
-	uint8_t mess_shift=FLASH_ReadByte(FLASH_SETTINGS_ADDR+CURRENT_REC_MESS);
+	uint8_t mess_shift=FLASH_ReadByte(FLASH_SETTINGS_ADDR+REC_MESS_NUM);
 	if(mess_shift==0xFF) mess_shift=0;
 	strcpy(tmp_str,RTC_GetDate());//+RTC_GetTime()+data;
 	strcat(tmp_str, RTC_GetTime());
 	strcat(tmp_str, "   ");
 	strcat(tmp_str, data);
 //	sprintf(tmp_str, "%s", RTC_GetDate()); //  %s %s, RTC_GetTime(), data
-	FLASH_WriteStr_PLA(FLASH_REC_MESS_ADDR+((mess_shift<20)?mess_shift:0)*MESS_MAX_SIZE, (uint8_t*)tmp_str, strlen(tmp_str)+1);
-	FLASH_WriteByte(FLASH_SETTINGS_ADDR+CURRENT_REC_MESS, mess_shift+1);
+	if(mess_shift == REC_MESS_MAX_NUM){
+		mess_shift=REC_MESS_MAX_NUM-1;
+		FLASH_PageErase(FLASH_REC_MESS_TMPBUF);
+		FLASH_WriteStr_PLA(FLASH_REC_MESS_TMPBUF+(REC_MESS_MAX_NUM-1)*MESS_MAX_SIZE, (uint8_t*)tmp_str, MESS_MAX_SIZE);
+		for(uint8_t i=1; i<REC_MESS_MAX_NUM; ++i){
+			FLASH_ReadStr(FLASH_REC_MESS_ADDR+i*MESS_MAX_SIZE, (uint8_t*)tmp_str, MESS_MAX_SIZE);
+			FLASH_WriteStr_PLA(FLASH_REC_MESS_TMPBUF+(i-1)*MESS_MAX_SIZE, (uint8_t*)tmp_str, MESS_MAX_SIZE); 
+		}
+		FLASH_PageErase(FLASH_REC_MESS_ADDR);
+		FLASH_PageErase(FLASH_REC_MESS_ADDR+FLASH_PAGESIZE);
+		for(uint8_t i=0; i<REC_MESS_MAX_NUM; ++i){
+			FLASH_ReadStr(FLASH_REC_MESS_TMPBUF+i*MESS_MAX_SIZE, (uint8_t*)tmp_str, MESS_MAX_SIZE);
+			FLASH_WriteStr_PLA(FLASH_REC_MESS_ADDR+i*MESS_MAX_SIZE, (uint8_t*)tmp_str, MESS_MAX_SIZE); 
+		}
+	}
+	else FLASH_WriteStr_PLA(FLASH_REC_MESS_ADDR+((mess_shift<20)?mess_shift:0)*MESS_MAX_SIZE, (uint8_t*)tmp_str, strlen(tmp_str)+1);
+//	FLASH_WriteByte(FLASH_SETTINGS_ADDR+CURRENT_REC_MESS, mess_shift+1);
 	FLASH_WriteByte(FLASH_SETTINGS_ADDR+REC_MESS_NUM, mess_shift+1);
 }
 

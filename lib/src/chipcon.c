@@ -545,7 +545,7 @@ void data_write()
 //	uint16_t addr = ccbuf[8];
 //	addr <<= 8;
 //	addr |= ccbuf[9];
-	memcpy(&tmp_buf[0], &ccbuf[10], 8);
+	memcpy(&tmp_buf[0], &ccbuf[10], SETTINGS_BYTES_NUM);
 	for (uint8_t i = 0; i < 64; i++) {
 		sum += ccbuf[i + 10];
 		if (sum > 0xff) sum -= 0xff;
@@ -561,7 +561,7 @@ void data_write()
 	echo();
 //	if (addr == 0x40) save_data();
 	
-	FLASH_WriteStr(FLASH_SETTINGS_ADDR, tmp_buf, sizeof(tmp_buf));
+	FLASH_WriteStr(FLASH_SETTINGS_ADDR, tmp_buf, SETTINGS_BYTES_NUM);
 //	EEPROM_SendStr(EEPROM_SETTINGS_ADDR, tmp_buf, strlen((const char*)tmp_buf));
 	
 	TFT_Fill_Area(0, 100, DISP_WIDTH, DISP_HEIGHT, BLACK);
