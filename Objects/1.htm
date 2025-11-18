@@ -3,9 +3,9 @@
 <title>Static Call Graph - [.\Objects\1.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\1.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Mon Nov 17 15:18:25 2025
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Tue Nov 18 12:18:21 2025
 <BR><P>
-<H3>Maximum Stack Usage =        888 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
+<H3>Maximum Stack Usage =       1016 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
 TIM14_IRQHandler &rArr; ShowSignal &rArr; MessRecToArch &rArr; FLASH_WriteByte &rArr; FLASH_WriteStr &rArr; FLASH_ReadStr
 <P>
@@ -855,8 +855,8 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[22]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM6_IRQHandler
 </UL>
 
-<P><STRONG><a name="[7f]"></a>MessRecToArch</STRONG> (Thumb, 238 bytes, Stack size 144 bytes, tft-menu.o(i.MessRecToArch))
-<BR><BR>[Stack]<UL><LI>Max Depth = 704 + Unknown Stack Size
+<P><STRONG><a name="[7f]"></a>MessRecToArch</STRONG> (Thumb, 286 bytes, Stack size 272 bytes, tft-menu.o(i.MessRecToArch))
+<BR><BR>[Stack]<UL><LI>Max Depth = 832 + Unknown Stack Size
 <LI>Call Chain = MessRecToArch &rArr; FLASH_WriteByte &rArr; FLASH_WriteStr &rArr; FLASH_ReadStr
 </UL>
 <BR>[Calls]<UL><LI><a href="#[75]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FLASH_WriteStr_PLA
@@ -1006,7 +1006,7 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[8d]"></a>ShowSignal</STRONG> (Thumb, 1550 bytes, Stack size 160 bytes, tft-menu.o(i.ShowSignal))
-<BR><BR>[Stack]<UL><LI>Max Depth = 864 + Unknown Stack Size
+<BR><BR>[Stack]<UL><LI>Max Depth = 992 + Unknown Stack Size
 <LI>Call Chain = ShowSignal &rArr; MessRecToArch &rArr; FLASH_WriteByte &rArr; FLASH_WriteStr &rArr; FLASH_ReadStr
 </UL>
 <BR>[Calls]<UL><LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TFT_Send_Str
@@ -1149,7 +1149,7 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[23]"></a>TIM14_IRQHandler</STRONG> (Thumb, 646 bytes, Stack size 24 bytes, tim.o(i.TIM14_IRQHandler))
-<BR><BR>[Stack]<UL><LI>Max Depth = 888 + Unknown Stack Size
+<BR><BR>[Stack]<UL><LI>Max Depth = 1016 + Unknown Stack Size
 <LI>Call Chain = TIM14_IRQHandler &rArr; ShowSignal &rArr; MessRecToArch &rArr; FLASH_WriteByte &rArr; FLASH_WriteStr &rArr; FLASH_ReadStr
 </UL>
 <BR>[Calls]<UL><LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TFT_Send_Str

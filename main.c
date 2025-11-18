@@ -82,6 +82,8 @@ int main(void)
 //	GPIOA->MODER|=(0b10<<GPIO_MODER_MODER8_Pos);
 //	RCC->CFGR|=RCC_CFGR_MCOSEL_HSE;
 
+//	FLASH_WriteByte(FLASH_SETTINGS_ADDR+REC_MESS_NUM, 0x12);
+
 	label=FLASH_ReadByte(FLASH_SETTINGS_ADDR+PAGER_NUM_LB)+(FLASH_ReadByte(FLASH_SETTINGS_ADDR+PAGER_NUM_HB)<<8);  // Присвоение метке номера из памяти
 	
 	TFT_Fill_Color(BLACK); // Заполнение экрана чёрным цветом
