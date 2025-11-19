@@ -21,6 +21,7 @@
 ".\objects\spi.o"
 ".\objects\tft-menu.o"
 ".\objects\tim.o"
+".\objects\systick.o"
 ".\objects\system_stm32f0xx.o"
 ".\objects\startup_stm32f030x8.o"
 --strict --scatter ".\Objects\1.sct"

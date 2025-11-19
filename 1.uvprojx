@@ -494,6 +494,11 @@
               <FileType>1</FileType>
               <FilePath>.\lib\src\tim.c</FilePath>
             </File>
+            <File>
+              <FileName>SysTick.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\lib\src\SysTick.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

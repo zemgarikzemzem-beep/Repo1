@@ -68,6 +68,14 @@ enum menu_time_items{
 	WEEKDAY
 };
 
+enum alarm_types{
+	NO_ALARM,
+	ALARM1,
+	ALARM2,
+	PLA_ITEM,
+	PERSONAL_CALL
+};
+
 extern char mess[];
 extern uint8_t mess_menu_sel_pos;
 extern int8_t Message_Current_Str;

@@ -12,6 +12,7 @@ volatile uint16_t t_label=1000;
 volatile uint32_t t_music=0;
 volatile uint8_t switch_flag_SOS = 0;
 volatile uint8_t MINUTES_TO_SLEEP=5;  // Количество минут до сна
+volatile uint32_t SystemTime=0;
 
 uint8_t flash_buf[64]={0,};          // временный буфер страницы
 uint8_t flash_buf_data = 0;

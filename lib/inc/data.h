@@ -15,6 +15,7 @@ extern volatile int cctimer;
 extern volatile uint16_t t_label;
 extern volatile uint32_t t_music;
 extern volatile uint8_t MINUTES_TO_SLEEP;  // Количество минут до сна
+extern volatile uint32_t SystemTime;
 extern volatile uint8_t switch_flag_SOS;
 extern uint8_t ccbuf[128];
 extern uint8_t flash_buf[64];

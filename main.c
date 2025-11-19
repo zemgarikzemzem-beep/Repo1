@@ -11,6 +11,7 @@
 
 #include "alerts.h"
 #include "rcc.h"
+#include "SysTick.h"
 #include "gpio.h"
 #include "spi.h"
 #include "i2c.h"
@@ -57,6 +58,7 @@ void delay(__IO uint32_t tck) // Задержка в мс (примерно)
 int main(void)
 {
 	Clock_Init(); // Инициализация тактирования
+	SYSTICK_Init();
 //	RTC_Init(); // Инициализация часов
 	GPIO_Init(); // Инициализация портов ввода-вывода
 	ADC_Init();  // Инициализация АЦП (сигнал приёма, батареи и зарядки)

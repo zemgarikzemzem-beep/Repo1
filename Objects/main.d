@@ -13,6 +13,7 @@
 .\objects\main.o: .\lib\inc\flash.h
 .\objects\main.o: .\lib\inc\tim.h
 .\objects\main.o: .\lib\inc\rcc.h
+.\objects\main.o: .\lib\inc\SysTick.h
 .\objects\main.o: .\lib\inc\gpio.h
 .\objects\main.o: .\lib\inc\spi.h
 .\objects\main.o: .\lib\inc\i2c.h

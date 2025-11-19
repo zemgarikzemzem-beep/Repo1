@@ -546,15 +546,15 @@ void MessRecToArch(char* data){
 		strcat(tmp_last_str, "   ");
 		strcat(tmp_last_str, data);
 		mess_shift=REC_MESS_MAX_NUM-1;
-		FLASH_PageErase(FLASH_REC_MESS_TMPBUF);
-		FLASH_PageErase(FLASH_REC_MESS_TMPBUF+FLASH_PAGESIZE);
+//		FLASH_PageErase(FLASH_REC_MESS_TMPBUF);
+//		FLASH_PageErase(FLASH_REC_MESS_TMPBUF+FLASH_PAGESIZE);
 		for(uint8_t i=1; i<REC_MESS_MAX_NUM; ++i){
 			FLASH_ReadStr(FLASH_REC_MESS_ADDR+i*MESS_MAX_SIZE, (uint8_t*)tmp_str, MESS_MAX_SIZE);
 			FLASH_WriteStr_PLA(FLASH_REC_MESS_TMPBUF+(i-1)*MESS_MAX_SIZE, (uint8_t*)tmp_str, MESS_MAX_SIZE); 
 		}
 		FLASH_WriteStr_PLA(FLASH_REC_MESS_TMPBUF+(REC_MESS_MAX_NUM-1)*MESS_MAX_SIZE, (uint8_t*)tmp_last_str, MESS_MAX_SIZE);
-		FLASH_PageErase(FLASH_REC_MESS_ADDR);
-		FLASH_PageErase(FLASH_REC_MESS_ADDR+FLASH_PAGESIZE);
+//		FLASH_PageErase(FLASH_REC_MESS_ADDR);
+//		FLASH_PageErase(FLASH_REC_MESS_ADDR+FLASH_PAGESIZE);
 		for(uint8_t i=0; i<REC_MESS_MAX_NUM; ++i){
 			FLASH_ReadStr(FLASH_REC_MESS_TMPBUF+i*MESS_MAX_SIZE, (uint8_t*)tmp_str, MESS_MAX_SIZE);
 			FLASH_WriteStr_PLA(FLASH_REC_MESS_ADDR+i*MESS_MAX_SIZE, (uint8_t*)tmp_str, MESS_MAX_SIZE); 
@@ -570,6 +570,16 @@ void MessRecToArch(char* data){
 //	FLASH_WriteByte(FLASH_SETTINGS_ADDR+CURRENT_REC_MESS, mess_shift+1);
 	FLASH_WriteByte(FLASH_SETTINGS_ADDR+REC_MESS_NUM, mess_shift+1);
 }
+
+uint8_t alarm_type_last=NO_ALARM, alarm_type_now=NO_ALARM;
+uint32_t time_last=0, time_now=0;
+
+uint8_t RecToArch(uint8_t alarm_type, char* alarm_mess){
+	alarm_type_now=alarm_type;
+	if(SystemTime-time_last>60000 || alarm_type_now!=alarm_type_last) 
+		MessRecToArch(alarm_mess);
+}
+
 
 inline void ShowSignal(void){
 	uint8_t is_12or14d=0;        // флаг разрядности
@@ -600,14 +610,20 @@ inline void ShowSignal(void){
 				_CLEAR_MENU_SCREEN;
 				TFT_Send_Str(0, 100, "Персональн. вызов!!!", 20, Font_11x18, RED, CYAN);
 				ALERT_ForMessage();
-				MessRecToArch("Персональн. вызов!!!");
+				RecToArch(PERSONAL_CALL, "Персональн. вызов!!!");
 			};
 		}
 		if((byte>>10)==0b11){
 			is_menu=0;
 			_CLEAR_MENU_SCREEN;
-			if((byte&0x003)==0b11) {TFT_Send_Str(0, 100, "Авария-1", 8, Font_11x18, RED, CYAN); MessRecToArch("Авария-1");}
-			if((byte&0x003)==0b00) {TFT_Send_Str(0, 100, "Авария-2", 8, Font_11x18, RED, CYAN); MessRecToArch("Авария-2");}
+			if((byte&0x003)==0b11) {
+				TFT_Send_Str(0, 100, "Авария-1", 8, Font_11x18, RED, CYAN);
+				RecToArch(ALARM1, "Авария-1");
+			}
+			if((byte&0x003)==0b00) {
+				TFT_Send_Str(0, 100, "Авария-2", 8, Font_11x18, RED, CYAN);
+				RecToArch(ALARM2, "Авария-2");
+			}
 			
 			if((byte&0x0F0)==0x030) {TFT_Send_Str(0, 118, "Рудник-1", 8, Font_11x18, RED, CYAN);}
 			if((byte&0x0F0)==0x0C0) {TFT_Send_Str(0, 118, "Рудник-2", 8, Font_11x18, RED, CYAN);}
@@ -627,7 +643,7 @@ inline void ShowSignal(void){
 				message_menu_flag=1;
 				ALERT_ForMessage();
 				FLASH_ReadStr(FLASH_PLA_ADDR+Message_Selected, (uint8_t*)tmp_str, MESS_MAX_SIZE);
-				MessRecToArch(tmp_str);
+				RecToArch(PLA_ITEM, tmp_str);
 			}
 		}
 	}
@@ -639,14 +655,20 @@ inline void ShowSignal(void){
 				_CLEAR_MENU_SCREEN;
 				TFT_Send_Str(0, 100, "Персональн. вызов!!!", 20, Font_11x18, RED, CYAN);
 				ALERT_ForMessage();
-				MessRecToArch("Персональн. вызов!!!");
+				RecToArch(PERSONAL_CALL, "Персональн. вызов!!!");
 			}
 		}
 		if((byte_14d>>12)==0b11){
 			is_menu=0;
 			_CLEAR_MENU_SCREEN;
-			if((byte_14d&0x00C)==0b1100) {TFT_Send_Str(0, 100, "Авария-1", 8, Font_11x18, RED, CYAN); MessRecToArch("Авария-1");}
-			if((byte_14d&0x00C)==0b0000) {TFT_Send_Str(0, 100, "Авария-2", 8, Font_11x18, RED, CYAN); MessRecToArch("Авария-2");}
+			if((byte_14d&0x00C)==0b1100) {
+				TFT_Send_Str(0, 100, "Авария-1", 8, Font_11x18, RED, CYAN);
+				RecToArch(ALARM1, "Авария-1");
+			}
+			if((byte_14d&0x00C)==0b0000) {
+				TFT_Send_Str(0, 100, "Авария-2", 8, Font_11x18, RED, CYAN);
+				RecToArch(ALARM2, "Авария-2");
+			}
 			
 			if((byte_14d&0x3C0)==0x0C0) TFT_Send_Str(0, 118, "Рудник-1", 8, Font_11x18, RED, CYAN);
 			if((byte_14d&0x3C0)==0x300) TFT_Send_Str(0, 118, "Рудник-2", 8, Font_11x18, RED, CYAN);
@@ -666,13 +688,13 @@ inline void ShowSignal(void){
 				message_menu_flag=1;
 				ALERT_ForMessage();
 				FLASH_ReadStr(FLASH_PLA_ADDR+Message_Selected, (uint8_t*)tmp_str, MESS_MAX_SIZE);
-				MessRecToArch(tmp_str);
+				RecToArch(PLA_ITEM, tmp_str);
 			}
-			
-			
 		}
 	}
 	
+	alarm_type_last=alarm_type_now;
+	time_last=SystemTime;
 	
 	RCC->APB2ENR|=RCC_APB2ENR_SPI1EN;  // Включаем периферию, выключенную на сне
 	RCC->APB1ENR|=RCC_APB1ENR_TIM3EN;
