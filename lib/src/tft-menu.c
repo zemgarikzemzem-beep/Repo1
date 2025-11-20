@@ -534,6 +534,9 @@ extern uint16_t label;
 
 extern uint32_t recw1, recw2;
 
+
+//=======Функция для записи в архив нового сообщения со сдвигом=========//
+
 void MessRecToArch(char* data){
 	char tmp_str[MESS_MAX_SIZE] = {0,};
 	char tmp_last_str[MESS_MAX_SIZE] = {0,};
@@ -574,12 +577,16 @@ void MessRecToArch(char* data){
 uint8_t alarm_type_last=NO_ALARM, alarm_type_now=NO_ALARM;
 uint32_t time_last=0, time_now=0;
 
+//=======Функция для записи в архив неповторяющегося сообщения=========//
+
 uint8_t RecToArch(uint8_t alarm_type, char* alarm_mess){
 	alarm_type_now=alarm_type;
 	if(SystemTime-time_last>60000 || alarm_type_now!=alarm_type_last) 
 		MessRecToArch(alarm_mess);
 }
 
+
+//=======Функция для вывода нового сообщения на экран и записи в архив=========//
 
 inline void ShowSignal(void){
 	uint8_t is_12or14d=0;        // флаг разрядности
