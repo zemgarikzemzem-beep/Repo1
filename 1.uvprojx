@@ -425,11 +425,6 @@
               <FilePath>.\lib\src\disp.c</FilePath>
             </File>
             <File>
-              <FileName>eeprom.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lib\src\eeprom.c</FilePath>
-            </File>
-            <File>
               <FileName>exti.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\lib\src\exti.c</FilePath>

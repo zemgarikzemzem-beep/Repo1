@@ -116,12 +116,15 @@ void Mess_Menu_Draw(uint32_t addr){
 			mess_num=FLASH_ReadByte(FLASH_SETTINGS_ADDR+REC_MESS_NUM);
 			break;
 	}
-	for(uint8_t i=0; i<((mess_num>MAX_MESS_ITEM_SCREEN)?MAX_MESS_ITEM_SCREEN:mess_num); ++i){ // 
-		FLASH_ReadStr(addr+MESS_MAX_SIZE*i, (uint8_t*)mess, MESS_MAX_ITEM_LENGTH);
-		TFT_Send_Str(MENU_CON_X, MENU_CON_Y+i*18, mess, (strlen(mess)<MESS_MAX_ITEM_LENGTH)?strlen(mess):MESS_MAX_ITEM_LENGTH, Font_11x18, WHITE, BLACK);
+	if(mess_num){
+		for(uint8_t i=0; i<((mess_num>MAX_MESS_ITEM_SCREEN)?MAX_MESS_ITEM_SCREEN:mess_num); ++i){ // 
+			FLASH_ReadStr(addr+MESS_MAX_SIZE*i, (uint8_t*)mess, MESS_MAX_ITEM_LENGTH);
+			TFT_Send_Str(MENU_CON_X, MENU_CON_Y+i*18, mess, (strlen(mess)<MESS_MAX_ITEM_LENGTH)?strlen(mess):MESS_MAX_ITEM_LENGTH, Font_11x18, WHITE, BLACK);
+		}
+		Message_Menu_Item_Select(addr, 0);
+		mess_menu_sel_pos=0;
 	}
-	Message_Menu_Item_Select(addr, 0);
-	mess_menu_sel_pos=0;
+	
 }
 
 //----------------------------------------------------------------------------------------------------------------------------
@@ -139,7 +142,7 @@ inline void Message_Menu_Navigation(uint32_t addr){
 	}
 	
 	
-	if(DOWN_KEY){
+	if(DOWN_KEY && MESS_NUM){
 		if(!In_Mess){                                // Прокрутка списка сообщений вниз
 			if(MESS_NUM<=MAX_MESS_ITEM_SCREEN){
 				Message_Menu_Item_Unselect(addr, Message_Selected);
@@ -178,7 +181,7 @@ inline void Message_Menu_Navigation(uint32_t addr){
 		}
 	}
 		
-	if(UP_KEY){
+	if(UP_KEY && MESS_NUM){
 		if(!In_Mess){                                // Прокрутка списка сообщений вверх
 			if(MESS_NUM<=MAX_MESS_ITEM_SCREEN){
 				Message_Menu_Item_Unselect(addr, Message_Selected);
@@ -214,7 +217,7 @@ inline void Message_Menu_Navigation(uint32_t addr){
 		}
 	}
 		
-	if(ENTER_KEY){             // Переход в меню выбора действий с сообщением
+	if(ENTER_KEY && MESS_NUM){             // Переход в меню выбора действий с сообщением
 //		Current_Menu=menu_mess;
 //		Menu_Draw(Current_Menu);
 //		Menu_Item_Select(Current_Menu, 0);
@@ -541,7 +544,7 @@ void MessRecToArch(char* data){
 	char tmp_str[MESS_MAX_SIZE] = {0,};
 	char tmp_last_str[MESS_MAX_SIZE] = {0,};
 	uint8_t mess_shift=FLASH_ReadByte(FLASH_SETTINGS_ADDR+REC_MESS_NUM);
-	if(mess_shift==0xFF) mess_shift=0;
+	//if(mess_shift==0xFF) mess_shift=0;
 //	sprintf(tmp_str, "%s", RTC_GetDate()); //  %s %s, RTC_GetTime(), data
 	if(mess_shift == REC_MESS_MAX_NUM){
 		strcpy(tmp_last_str,RTC_GetDate());//+RTC_GetTime()+data;
@@ -553,14 +556,14 @@ void MessRecToArch(char* data){
 //		FLASH_PageErase(FLASH_REC_MESS_TMPBUF+FLASH_PAGESIZE);
 		for(uint8_t i=1; i<REC_MESS_MAX_NUM; ++i){
 			FLASH_ReadStr(FLASH_REC_MESS_ADDR+i*MESS_MAX_SIZE, (uint8_t*)tmp_str, MESS_MAX_SIZE);
-			FLASH_WriteStr_PLA(FLASH_REC_MESS_TMPBUF+(i-1)*MESS_MAX_SIZE, (uint8_t*)tmp_str, MESS_MAX_SIZE); 
+			FLASH_WriteStr_Mess(FLASH_REC_MESS_TMPBUF+(i-1)*MESS_MAX_SIZE, (uint8_t*)tmp_str, MESS_MAX_SIZE); 
 		}
-		FLASH_WriteStr_PLA(FLASH_REC_MESS_TMPBUF+(REC_MESS_MAX_NUM-1)*MESS_MAX_SIZE, (uint8_t*)tmp_last_str, MESS_MAX_SIZE);
+		FLASH_WriteStr_Mess(FLASH_REC_MESS_TMPBUF+(REC_MESS_MAX_NUM-1)*MESS_MAX_SIZE, (uint8_t*)tmp_last_str, MESS_MAX_SIZE);
 //		FLASH_PageErase(FLASH_REC_MESS_ADDR);
 //		FLASH_PageErase(FLASH_REC_MESS_ADDR+FLASH_PAGESIZE);
 		for(uint8_t i=0; i<REC_MESS_MAX_NUM; ++i){
 			FLASH_ReadStr(FLASH_REC_MESS_TMPBUF+i*MESS_MAX_SIZE, (uint8_t*)tmp_str, MESS_MAX_SIZE);
-			FLASH_WriteStr_PLA(FLASH_REC_MESS_ADDR+i*MESS_MAX_SIZE, (uint8_t*)tmp_str, MESS_MAX_SIZE); 
+			FLASH_WriteStr_Mess(FLASH_REC_MESS_ADDR+i*MESS_MAX_SIZE, (uint8_t*)tmp_str, MESS_MAX_SIZE); 
 		}
 	}
 	else{
@@ -568,7 +571,15 @@ void MessRecToArch(char* data){
 		strcat(tmp_str, RTC_GetTime());
 		strcat(tmp_str, "   ");
 		strcat(tmp_str, data);
-		FLASH_WriteStr_PLA(FLASH_REC_MESS_ADDR+mess_shift*MESS_MAX_SIZE, (uint8_t*)tmp_str, strlen(tmp_str)+1);
+		for(uint8_t i=0; i<mess_shift; ++i){
+			FLASH_ReadStr(FLASH_REC_MESS_ADDR+i*MESS_MAX_SIZE, (uint8_t*)tmp_str, MESS_MAX_SIZE);
+			FLASH_WriteStr_Mess(FLASH_REC_MESS_TMPBUF+i*MESS_MAX_SIZE, (uint8_t*)tmp_str, MESS_MAX_SIZE); 
+		}
+		for(uint8_t i=0; i<mess_shift; ++i){
+			FLASH_ReadStr(FLASH_REC_MESS_TMPBUF+i*MESS_MAX_SIZE, (uint8_t*)tmp_str, MESS_MAX_SIZE);
+			FLASH_WriteStr_Mess(FLASH_REC_MESS_ADDR+i*MESS_MAX_SIZE, (uint8_t*)tmp_str, MESS_MAX_SIZE); 
+		}
+		FLASH_WriteStr_Mess(FLASH_REC_MESS_ADDR+mess_shift*MESS_MAX_SIZE, (uint8_t*)tmp_str, strlen(tmp_str)+1);
 	}
 //	FLASH_WriteByte(FLASH_SETTINGS_ADDR+CURRENT_REC_MESS, mess_shift+1);
 	FLASH_WriteByte(FLASH_SETTINGS_ADDR+REC_MESS_NUM, mess_shift+1);

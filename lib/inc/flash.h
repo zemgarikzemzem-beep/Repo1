@@ -9,6 +9,7 @@
 #define FLASH_REC_MESS_ADDR				0x08030800
 #define	FLASH_REC_MESS_TMPBUF			0x08031800
 #define FLASH_PAGESIZE						0x800
+#define MESS_MAX_SIZE 						128
 #define SETTINGS_BYTES_NUM				6            // Чтобы не затиралось!
 #define	REC_MESS_MAX_NUM					20
 
@@ -43,7 +44,7 @@ enum pager_alerts{
 
 //------------------------------------------------
 void FLASH_PageErase(uint32_t page_addr);
-void FLASH_WriteStr_PLA(uint32_t flash_addr, uint8_t* data, uint8_t size);
+void FLASH_WriteStr_Mess(uint32_t flash_addr, uint8_t* data, uint8_t size);
 void FLASH_WriteStr(uint32_t flash_addr, uint8_t* data, uint8_t size);
 void FLASH_WriteByte(uint32_t flash_addr, uint8_t byte);
 void FLASH_ReadStr(uint32_t flash_addr, uint8_t* buff, uint8_t size);

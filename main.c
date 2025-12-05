@@ -88,6 +88,12 @@ int main(void)
 
 	label=FLASH_ReadByte(FLASH_SETTINGS_ADDR+PAGER_NUM_LB)+(FLASH_ReadByte(FLASH_SETTINGS_ADDR+PAGER_NUM_HB)<<8);  // Присвоение метке номера из памяти
 	
+	uint8_t mess_shift=FLASH_ReadByte(FLASH_SETTINGS_ADDR+REC_MESS_NUM);
+	if(mess_shift==0xFF){
+		mess_shift=0;
+		FLASH_WriteByte(FLASH_SETTINGS_ADDR+REC_MESS_NUM, 0);
+	}
+	
 	TFT_Fill_Color(BLACK); // Заполнение экрана чёрным цветом
 	
 	TFT_Draw_Image_Mono(logo_mono_arr, logo_mono_width, logo_mono_height, 4, 50, WHITE, BLACK); // Вывод логотипа

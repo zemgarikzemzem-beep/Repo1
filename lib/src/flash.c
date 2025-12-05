@@ -57,7 +57,7 @@ uint8_t FLASH_ReadByte(uint32_t flash_addr){
 
 /*============Запись ПЛЛПА по адресу==============*/
 
-void FLASH_WriteStr_PLA(uint32_t flash_addr, uint8_t* data, uint8_t size){
+void FLASH_WriteStr_Mess(uint32_t flash_addr, uint8_t* data, uint8_t size){
 //	uint8_t pagebytes[255]={0,};
 //	uint32_t pageaddr=(flash_addr/FLASH_PAGESIZE)*FLASH_PAGESIZE;
 //	FLASH_ReadStr(pageaddr, pagebytes, 255);
@@ -99,10 +99,10 @@ void FLASH_WriteStr_PLA(uint32_t flash_addr, uint8_t* data, uint8_t size){
 /*============Запись последовательности байт по адресу==============*/
 
 void FLASH_WriteStr(uint32_t flash_addr, uint8_t* data, uint8_t size){
-	uint8_t pagebytes[254]={0,};
+	uint8_t pagebytes[MESS_MAX_SIZE]={0,};
 	uint8_t offset=flash_addr%FLASH_PAGESIZE;
 	uint32_t pageaddr=(flash_addr/FLASH_PAGESIZE)*FLASH_PAGESIZE;
-	FLASH_ReadStr(pageaddr, pagebytes, 254);
+	FLASH_ReadStr(pageaddr, pagebytes, MESS_MAX_SIZE);
 	for(uint8_t i=0; i<size; ++i){
 		pagebytes[offset+i]=data[i];
 	}
@@ -113,7 +113,7 @@ void FLASH_WriteStr(uint32_t flash_addr, uint8_t* data, uint8_t size){
 	
 	FLASH->CR |= FLASH_CR_PG;
 	
-	for(uint8_t i=0; i<254; i+=2){
+	for(uint8_t i=0; i<MESS_MAX_SIZE; i+=2){  // 
 		*(__IO uint16_t*)(pageaddr) = (pagebytes[i]&0xFF)|(pagebytes[i+1]<<8);
 		while ((FLASH->SR & FLASH_SR_BSY) != 0);
 		if ((FLASH->SR & FLASH_SR_EOP) != 0) FLASH->SR = FLASH_SR_EOP;
@@ -128,10 +128,10 @@ void FLASH_WriteStr(uint32_t flash_addr, uint8_t* data, uint8_t size){
 //-------------------------------------------------------------------------
 
 void FLASH_WriteByte(uint32_t flash_addr, uint8_t byte){
-	uint8_t pagebytes[255]={0,};
+	uint8_t pagebytes[MESS_MAX_SIZE]={0,};
 	uint32_t pageaddr=(flash_addr/FLASH_PAGESIZE)*FLASH_PAGESIZE;
-	FLASH_ReadStr(pageaddr, pagebytes, 255);
+	FLASH_ReadStr(pageaddr, pagebytes, MESS_MAX_SIZE);
 	pagebytes[flash_addr%FLASH_PAGESIZE]=byte;
 	FLASH_PageErase(pageaddr);
-	FLASH_WriteStr(pageaddr, pagebytes, 255);
+	FLASH_WriteStr(pageaddr, pagebytes, MESS_MAX_SIZE);
 }

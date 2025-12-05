@@ -693,7 +693,7 @@ void get_pla(void)
 	
 	if(addr!=flash_buf_addr){  //  && addr%MESS_MAX_SIZE==0x40
 		if(tmp_buf[0]||tmp_buf[1]){
-			FLASH_WriteStr_PLA(FLASH_PLA_ADDR+flash_buf_addr, tmp_buf, MESS_MAX_SIZE/2);
+			FLASH_WriteStr_Mess(FLASH_PLA_ADDR+flash_buf_addr, tmp_buf, MESS_MAX_SIZE/2);
 		}
 		flash_buf_addr=addr;
 		++mess_num;
@@ -732,10 +732,10 @@ void get_pla(void)
 //			current_flash_addr_pla=FLASH_PLA_ADDR+(mess_num-EEPROM_MAXIMAL_SEND)*MESS_MAX_SIZE;
 //			for(uint16_t i=0; i<EEPROM_MAXIMAL_SEND; ++i){
 //				EEPROM_ReadStr(EEPROM_MESSAGES_ADDR+i*MESS_MAX_SIZE, mess_buf, MESS_MAX_SIZE);
-//				FLASH_WriteStr_PLA(current_flash_addr_pla+i*MESS_MAX_SIZE, mess_buf, strlen((const char*)mess_buf)+1);
+//				FLASH_WriteStr_Mess(current_flash_addr_pla+i*MESS_MAX_SIZE, mess_buf, strlen((const char*)mess_buf)+1);
 //			}
 //		}
-////		FLASH_WriteStr_PLA(FLASH_PLA_ADDR+(addr/MESS_MAX_SIZE)*MESS_MAX_SIZE, tmp_buf, strlen((const char*)tmp_buf)+1);
+////		FLASH_WriteStr_Mess(FLASH_PLA_ADDR+(addr/MESS_MAX_SIZE)*MESS_MAX_SIZE, tmp_buf, strlen((const char*)tmp_buf)+1);
 //		EEPROM_SendStr_PLA(EEPROM_MESSAGES_ADDR+(mess_num%EEPROM_MAXIMAL_SEND)*MESS_MAX_SIZE, tmp_buf, strlen((const char*)tmp_buf)); // (addr/MESS_MAX_SIZE)*MESS_MAX_SIZE
 ////		current_eeprom_pos+=128;
 ////				Pla_CRC=CRC_Result(tmp_buf, strlen((const char*)tmp_buf));
@@ -761,7 +761,7 @@ void get_pla(void)
 //			EEPROM_ReadStr(EEPROM_MESSAGES_ADDR+i*MESS_MAX_SIZE, tmp_buf, MESS_MAX_SIZE);
 ////			Pla_CRC=CRC_Result(tmp_buf, strlen((const char*)tmp_buf));
 ////			EEPROM_SendStr(EEPROM_SETTINGS_ADDR+PLA_CRC_0, (uint8_t*)&Pla_CRC, 4);
-//			FLASH_WriteStr_PLA(current_flash_addr_pla+i*MESS_MAX_SIZE, tmp_buf, strlen((const char*)tmp_buf)+1); // 
+//			FLASH_WriteStr_Mess(current_flash_addr_pla+i*MESS_MAX_SIZE, tmp_buf, strlen((const char*)tmp_buf)+1); // 
 //		}
 //		
 //		for(uint16_t i=0; i<mess_num;++i){

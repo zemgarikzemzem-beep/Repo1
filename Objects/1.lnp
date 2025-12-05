@@ -7,7 +7,6 @@
 ".\objects\crc.o"
 ".\objects\data.o"
 ".\objects\disp.o"
-".\objects\eeprom.o"
 ".\objects\exti.o"
 ".\objects\fft.o"
 ".\objects\flash.o"
