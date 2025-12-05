@@ -9,7 +9,7 @@
 #define FLASH_REC_MESS_ADDR				0x08030800
 #define	FLASH_REC_MESS_TMPBUF			0x08031800
 #define FLASH_PAGESIZE						0x800
-#define SETTINGS_BYTES_NUM				63
+#define SETTINGS_BYTES_NUM				6            // Чтобы не затиралось!
 #define	REC_MESS_MAX_NUM					20
 
 enum pager_settings{

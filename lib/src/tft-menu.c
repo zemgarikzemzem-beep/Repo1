@@ -108,15 +108,15 @@ void Message_Menu_Item_Unselect(uint32_t addr, uint8_t item_num){
 void Mess_Menu_Draw(uint32_t addr){
 	_CLEAR_MENU_SCREEN;
 	uint16_t mess_num;
-//	switch(addr){
-//		case FLASH_PLA_ADDR:
-//			mess_num=(FLASH_ReadByte(FLASH_SETTINGS_ADDR+PLA_ITEMS_NUM_1)<<8)+(FLASH_ReadByte(FLASH_SETTINGS_ADDR+PLA_ITEMS_NUM_0)&0xFF);
-//			break;
-//		case FLASH_REC_MESS_ADDR:
-//			mess_num=FLASH_ReadByte(FLASH_SETTINGS_ADDR+REC_MESS_NUM);
-//			break;
-//	}
-	for(uint8_t i=0; i<(MAX_MESS_ITEM_SCREEN); ++i){ // (mess_num>MAX_MESS_ITEM_SCREEN)?:mess_num
+	switch(addr){
+		case FLASH_PLA_ADDR:
+			mess_num=(FLASH_ReadByte(FLASH_SETTINGS_ADDR+PLA_ITEMS_NUM_1)<<8)+(FLASH_ReadByte(FLASH_SETTINGS_ADDR+PLA_ITEMS_NUM_0)&0xFF);
+			break;
+		case FLASH_REC_MESS_ADDR:
+			mess_num=FLASH_ReadByte(FLASH_SETTINGS_ADDR+REC_MESS_NUM);
+			break;
+	}
+	for(uint8_t i=0; i<((mess_num>MAX_MESS_ITEM_SCREEN)?MAX_MESS_ITEM_SCREEN:mess_num); ++i){ // 
 		FLASH_ReadStr(addr+MESS_MAX_SIZE*i, (uint8_t*)mess, MESS_MAX_ITEM_LENGTH);
 		TFT_Send_Str(MENU_CON_X, MENU_CON_Y+i*18, mess, (strlen(mess)<MESS_MAX_ITEM_LENGTH)?strlen(mess):MESS_MAX_ITEM_LENGTH, Font_11x18, WHITE, BLACK);
 	}
@@ -182,7 +182,7 @@ inline void Message_Menu_Navigation(uint32_t addr){
 		if(!In_Mess){                                // Прокрутка списка сообщений вверх
 			if(MESS_NUM<=MAX_MESS_ITEM_SCREEN){
 				Message_Menu_Item_Unselect(addr, Message_Selected);
-				Message_Menu_Item_Select(addr, (Message_Selected>0)?(Message_Selected-1):2);
+				Message_Menu_Item_Select(addr, (Message_Selected>0)?(Message_Selected-1):MESS_NUM-1);
 			}
 			else
 				if(mess_menu_sel_pos>0){
@@ -227,7 +227,7 @@ inline void Message_Menu_Navigation(uint32_t addr){
 			In_Mess=0;
 			Message_Current_Str=0;
 			_CLEAR_MENU_SCREEN;
-			for(uint8_t i=0; i<MAX_MESS_ITEM_SCREEN; ++i){
+			for(uint8_t i=0; i<((MESS_NUM>MAX_MESS_ITEM_SCREEN)?MAX_MESS_ITEM_SCREEN:MESS_NUM); ++i){
 				FLASH_ReadStr(addr+MESS_MAX_SIZE*((Message_Selected-mess_menu_sel_pos+i)%MESS_NUM), (uint8_t*)mess, MESS_MAX_ITEM_LENGTH);
 				TFT_Send_Str(MENU_CON_X, MENU_CON_Y+i*18, mess, (strlen(mess)<MESS_MAX_ITEM_LENGTH)?strlen(mess):MESS_MAX_ITEM_LENGTH, Font_11x18, (mess_menu_sel_pos!=i)?WHITE:BLACK, (mess_menu_sel_pos!=i)?BLACK:WHITE);
 			}

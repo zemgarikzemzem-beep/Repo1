@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Objects\1.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\1.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Thu Nov 20 10:17:27 2025
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Fri Dec 05 11:44:12 2025
 <BR><P>
 <H3>Maximum Stack Usage =       1032 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -702,6 +702,7 @@ Global Symbols
 <LI><a href="#[3d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 <LI><a href="#[8e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ShowSignal
 <LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Message_Menu_Navigation
+<LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Mess_Menu_Draw
 <LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MessRecToArch
 </UL>
 
@@ -864,12 +865,13 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RecToArch
 </UL>
 
-<P><STRONG><a name="[84]"></a>Mess_Menu_Draw</STRONG> (Thumb, 116 bytes, Stack size 32 bytes, tft-menu.o(i.Mess_Menu_Draw))
-<BR><BR>[Stack]<UL><LI>Max Depth = 208<LI>Call Chain = Mess_Menu_Draw &rArr; Message_Menu_Item_Select &rArr; TFT_Send_Str &rArr; TFT_Send_Char &rArr; TFT_Set_Area &rArr; TFT_Send_Data
+<P><STRONG><a name="[84]"></a>Mess_Menu_Draw</STRONG> (Thumb, 184 bytes, Stack size 40 bytes, tft-menu.o(i.Mess_Menu_Draw))
+<BR><BR>[Stack]<UL><LI>Max Depth = 216<LI>Call Chain = Mess_Menu_Draw &rArr; Message_Menu_Item_Select &rArr; TFT_Send_Str &rArr; TFT_Send_Char &rArr; TFT_Set_Area &rArr; TFT_Send_Data
 </UL>
 <BR>[Calls]<UL><LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TFT_Send_Str
 <LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TFT_Fill_Area
 <LI><a href="#[73]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FLASH_ReadStr
+<LI><a href="#[63]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FLASH_ReadByte
 <LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Message_Menu_Item_Select
 <LI><a href="#[7b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;strlen
 </UL>
@@ -898,8 +900,8 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Message_Menu_Navigation
 </UL>
 
-<P><STRONG><a name="[87]"></a>Message_Menu_Navigation</STRONG> (Thumb, 1528 bytes, Stack size 32 bytes, tft-menu.o(i.Message_Menu_Navigation))
-<BR><BR>[Stack]<UL><LI>Max Depth = 240<LI>Call Chain = Message_Menu_Navigation &rArr; Mess_Menu_Draw &rArr; Message_Menu_Item_Select &rArr; TFT_Send_Str &rArr; TFT_Send_Char &rArr; TFT_Set_Area &rArr; TFT_Send_Data
+<P><STRONG><a name="[87]"></a>Message_Menu_Navigation</STRONG> (Thumb, 1548 bytes, Stack size 32 bytes, tft-menu.o(i.Message_Menu_Navigation))
+<BR><BR>[Stack]<UL><LI>Max Depth = 248<LI>Call Chain = Message_Menu_Navigation &rArr; Mess_Menu_Draw &rArr; Message_Menu_Item_Select &rArr; TFT_Send_Str &rArr; TFT_Send_Char &rArr; TFT_Set_Area &rArr; TFT_Send_Data
 </UL>
 <BR>[Calls]<UL><LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TFT_Send_Str
 <LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TFT_Fill_Area
