@@ -1,5 +1,6 @@
 #include "adc.h"
 #include "gpio.h"
+#include "data.h"
 
 	uint16_t adc[3];
 extern void delay(__IO uint32_t tck);
@@ -63,7 +64,7 @@ uint16_t* ADC1_Result_DMA(void){
 extern uint32_t dacc01, dacc02, dacc03, dacc04, dout01, dout02, dout03, dout04;
 extern uint32_t dacc11, dacc12, dacc13, dacc14, dout11, dout12, dout13, dout14;
 extern uint8_t level0_tmp, level1_tmp; 
-extern uint8_t adc_timer_flag, signal_timer_flag, adc_in_flag, adc_in_battery_flag;
+extern uint8_t adc_timer_flag, signal_timer_flag;
 
 void ADC1_IRQHandler(void){
 	switch(adc_in_flag){

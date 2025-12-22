@@ -44,9 +44,6 @@ extern uint8_t autolock_flag, keys_lock_flag;
 
 //extern uint32_t conv_res;
 
-extern volatile uint8_t adc_in_flag;
-extern volatile uint8_t adc_in_battery_flag;
-
 void delay(__IO uint32_t tck) // Задержка в мс (примерно)
 {
 	tck*=3000;
@@ -143,7 +140,7 @@ int main(void)
 	while(1){
 		
 		if(!--batt_refr_time){
-			batt_refr_time=40000;
+			batt_refr_time=BATT_REFR_TIME;
 			#ifdef ADC_INTERRUPT
 				adc_in_flag=B_OR_CH_ADC;
 				adc_in_battery_flag=(adc_in_battery_flag+1)&0b1;

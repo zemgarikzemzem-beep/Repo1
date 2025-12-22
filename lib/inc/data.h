@@ -10,11 +10,27 @@
 #define BACK_KEY		!(GPIOA->IDR&(1<<12))
 #define ENTER_KEY		!(GPIOB->IDR&(1<<8))
 
-#define BATT_REFR_TIME									40000
+#define BATT_REFR_TIME									SystemCoreClock/3
 #define TIMESHOW_REFR_TIME							60000
 #define RECEIVE_MESSAGE_SHOW_REFR_TIME	1000
 
 #define KEYPRESSED_REFR_TIME						200
+
+enum adc_tim{
+	NO_SIG,
+	ZERO_SIG,
+	ONE_SIG
+};
+
+enum adc_in{
+	SIGNAL_ADC,
+	B_OR_CH_ADC
+};
+
+enum adc_in_battery{
+	BATTERY_ADC,
+	CHARGE_ADC
+};
 
 
 extern volatile int timer1ms;
@@ -39,8 +55,11 @@ extern uint8_t lcd_type;
 
 extern uint8_t show_battery_flag;
 
-extern uint16_t batt_refr_time;
+extern uint32_t batt_refr_time;
 extern uint16_t timeshow_refr_time;
 extern uint16_t receive_message_show_refr_time;
 
 extern uint16_t keypressed_refr_time;
+
+extern volatile uint8_t adc_in_flag;
+extern volatile uint8_t adc_in_battery_flag;

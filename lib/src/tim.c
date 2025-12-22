@@ -34,9 +34,6 @@ uint8_t signal=NO_SIGNAL; // Принятый бит
 
 uint8_t is_prog_mode=0, is_signal_power_mode=0;
 
-volatile uint8_t adc_in_flag=SIGNAL_ADC;
-volatile uint8_t adc_in_battery_flag=CHARGE_ADC;
-
 uint32_t accident_show_time=80000;
 
 uint16_t sign_max=0, sign_min=4095;

@@ -9,3 +9,4 @@
 .\objects\adc.o: .\lib\cmsis_armcc.h
 .\objects\adc.o: C:\Users\User\AppData\Local\Arm\Packs\Keil\STM32F0xx_DFP\2.1.1\Drivers\CMSIS\Device\ST\STM32F0xx\Include\system_stm32f0xx.h
 .\objects\adc.o: .\lib\inc\gpio.h
+.\objects\adc.o: .\lib\inc\data.h

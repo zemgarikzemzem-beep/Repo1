@@ -567,19 +567,20 @@ void MessRecToArch(char* data){
 		}
 	}
 	else{
-		strcpy(tmp_str,RTC_GetDate());//+RTC_GetTime()+data;
-		strcat(tmp_str, RTC_GetTime());
-		strcat(tmp_str, "   ");
-		strcat(tmp_str, data);
+		strcpy(tmp_last_str,RTC_GetDate());//+RTC_GetTime()+data;
+		strcat(tmp_last_str, RTC_GetTime());
+		strcat(tmp_last_str, "   ");
+		strcat(tmp_last_str, data);
 		for(uint8_t i=0; i<mess_shift; ++i){
 			FLASH_ReadStr(FLASH_REC_MESS_ADDR+i*MESS_MAX_SIZE, (uint8_t*)tmp_str, MESS_MAX_SIZE);
 			FLASH_WriteStr_Mess(FLASH_REC_MESS_TMPBUF+i*MESS_MAX_SIZE, (uint8_t*)tmp_str, MESS_MAX_SIZE); 
 		}
+//		FLASH_WriteStr_Mess(FLASH_REC_MESS_TMPBUF+mess_shift*MESS_MAX_SIZE, (uint8_t*)tmp_last_str, MESS_MAX_SIZE);
 		for(uint8_t i=0; i<mess_shift; ++i){
 			FLASH_ReadStr(FLASH_REC_MESS_TMPBUF+i*MESS_MAX_SIZE, (uint8_t*)tmp_str, MESS_MAX_SIZE);
 			FLASH_WriteStr_Mess(FLASH_REC_MESS_ADDR+i*MESS_MAX_SIZE, (uint8_t*)tmp_str, MESS_MAX_SIZE); 
 		}
-		FLASH_WriteStr_Mess(FLASH_REC_MESS_ADDR+mess_shift*MESS_MAX_SIZE, (uint8_t*)tmp_str, strlen(tmp_str)+1);
+		FLASH_WriteStr_Mess(FLASH_REC_MESS_ADDR+mess_shift*MESS_MAX_SIZE, (uint8_t*)tmp_last_str, strlen(tmp_last_str)+1);
 	}
 //	FLASH_WriteByte(FLASH_SETTINGS_ADDR+CURRENT_REC_MESS, mess_shift+1);
 	FLASH_WriteByte(FLASH_SETTINGS_ADDR+REC_MESS_NUM, mess_shift+1);
