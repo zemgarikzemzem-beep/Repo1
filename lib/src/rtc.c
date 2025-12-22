@@ -32,13 +32,13 @@ char* RTC_GetTime(void){
 	char str[100], str1[5];
 	uint8_t Hours=((RTC->TR>>RTC_TR_HT_Pos)&0b0011)*10+((RTC->TR>>RTC_TR_HU_Pos)&0x0F);
 	uint8_t Minutes=((RTC->TR>>RTC_TR_MNT_Pos)&0x0F)*10+((RTC->TR>>RTC_TR_MNU_Pos)&0x0F);
-	uint8_t Seconds=((RTC->TR>>RTC_TR_ST_Pos)&0x0F)*10+((RTC->TR>>RTC_TR_SU_Pos)&0x0F);
+//	uint8_t Seconds=((RTC->TR>>RTC_TR_ST_Pos)&0x0F)*10+((RTC->TR>>RTC_TR_SU_Pos)&0x0F);
 	
 	if(Hours/10==0) sprintf(str, "0%d:",  Hours); else sprintf(str, "%d:",  Hours);
-	if(Minutes/10==0) sprintf(str1, "0%d:",  Minutes); else sprintf(str1, "%d:",  Minutes);
+	if(Minutes/10==0) sprintf(str1, "0%d",  Minutes); else sprintf(str1, "%d",  Minutes); // ::
 	strcat(str, str1);
-	if(Seconds/10==0) sprintf(str1, "0%d",  Seconds); else sprintf(str1, "%d",  Seconds);
-	strcat(str, str1);
+//	if(Seconds/10==0) sprintf(str1, "0%d",  Seconds); else sprintf(str1, "%d",  Seconds);
+//	strcat(str, str1);
 	
 	return str;
 }

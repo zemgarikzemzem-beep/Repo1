@@ -6,7 +6,7 @@
 #define APPLICATION_ADDRESS		0x08004000
 #define FLASH_PRGFLAG_ADDR		0x0803000C
 #define FLASH_CRC_ADDR				0x0803000E
-#define FLASH_SDFB_ADDR				0x08030014
+#define FLASH_SDFB_ADDR				0x08030014  // Флаг выключения с кнопки, чтоб не прыгал при перезагрузке
 #define FLASH_BOOTLOADER_END	0x00004000
 #define FLASH_PAGESIZE				0x800
 #define FLASH_SECTOR_SIZE			0x1000
