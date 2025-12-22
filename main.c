@@ -44,6 +44,9 @@ extern uint8_t autolock_flag, keys_lock_flag;
 
 //extern uint32_t conv_res;
 
+extern volatile uint8_t adc_in_flag;
+extern volatile uint8_t adc_in_battery_flag;
+
 void delay(__IO uint32_t tck) // Задержка в мс (примерно)
 {
 	tck*=3000;
@@ -105,7 +108,7 @@ int main(void)
 //	Imperial_March();
 //	Ot_ulybki();
 	
-	TIM14_Init(); // Инициализация таймера непрерывного вывода на дисплей (обязательно - после прорисовки статичных рисунков, иначе прерывание вклинивается и вырубает CS !!!)
+//	TIM14_Init(); // Инициализация таймера непрерывного вывода на дисплей (обязательно - после прорисовки статичных рисунков, иначе прерывание вклинивается и вырубает CS !!!)
 	
 	
 	
@@ -139,6 +142,26 @@ int main(void)
 	
 	while(1){
 		
+		if(!--batt_refr_time){
+			batt_refr_time=40000;
+			#ifdef ADC_INTERRUPT
+				adc_in_flag=B_OR_CH_ADC;
+				adc_in_battery_flag=(adc_in_battery_flag+1)&0b1;
+				switch(adc_in_battery_flag){
+							case BATTERY_ADC:
+								ADC1->CHSELR=ADC_CHSELR_CHSEL2; // ??????????????????????????
+								ADC1->CR |= ADC_CR_ADSTART;
+							break;
+							
+							case CHARGE_ADC:
+								ADC1->CHSELR=ADC_CHSELR_CHSEL3;
+								ADC1->CR |= ADC_CR_ADSTART;
+							break;
+				}
+			#endif // ADC_INTERRUPT
+			show_battery_flag=1;
+		}
+		
 		if(switch_flag_SOS){
 			if(!t_label){
 				chl_load(SOS_CHANNEL);
@@ -169,7 +192,7 @@ int main(void)
 				wait_to_sleep=0;
 				//----------Для экономии батарейки----------//
 				RCC->APB2ENR&=~RCC_APB2ENR_SPI1EN;
-				RCC->APB1ENR&=~RCC_APB1ENR_TIM3EN;
+//				RCC->APB1ENR&=~RCC_APB1ENR_TIM3EN;
 //				RCC->APB2ENR&=~RCC_APB2ENR_TIM1EN;
 			}
 			if((!(GPIOA->IDR&(1<<11)) || !(GPIOA->IDR&(1<<12)) || !(GPIOB->IDR&(1<<8)) || !(GPIOB->IDR&(1<<9))) && !wait_to_sleep && !keys_lock_flag){
@@ -178,7 +201,7 @@ int main(void)
 				TIM1->CCR3=5000;
 				//----------Для экономии батарейки----------//
 				RCC->APB2ENR|=RCC_APB2ENR_SPI1EN;
-				RCC->APB1ENR|=RCC_APB1ENR_TIM3EN;
+//				RCC->APB1ENR|=RCC_APB1ENR_TIM3EN;
 //				RCC->APB2ENR|=RCC_APB2ENR_TIM1EN;
 			}
 		#endif // SLEEP_TIMER

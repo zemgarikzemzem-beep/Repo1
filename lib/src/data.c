@@ -29,6 +29,11 @@ uint8_t locked = 1;
 uint8_t ccbuf[128];
 int offtimeout = 180000;           // таймаут выключения
 uint8_t lcd_type = 1;           // временно тип дисплея 7789 SPI
+
+uint8_t show_battery_flag=0;
+
 uint16_t batt_refr_time=2;
+uint16_t timeshow_refr_time=1000;
+uint16_t receive_message_show_refr_time=2;
 
-
+uint16_t keypressed_refr_time=2;

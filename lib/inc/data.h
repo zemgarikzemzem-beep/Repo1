@@ -10,6 +10,13 @@
 #define BACK_KEY		!(GPIOA->IDR&(1<<12))
 #define ENTER_KEY		!(GPIOB->IDR&(1<<8))
 
+#define BATT_REFR_TIME									40000
+#define TIMESHOW_REFR_TIME							60000
+#define RECEIVE_MESSAGE_SHOW_REFR_TIME	1000
+
+#define KEYPRESSED_REFR_TIME						200
+
+
 extern volatile int timer1ms;
 extern volatile int cctimer;
 extern volatile uint16_t t_label;
@@ -29,4 +36,11 @@ extern uint8_t cc_flag;
 extern int offtimeout;
 extern uint32_t first_addr;
 extern uint8_t lcd_type;
+
+extern uint8_t show_battery_flag;
+
 extern uint16_t batt_refr_time;
+extern uint16_t timeshow_refr_time;
+extern uint16_t receive_message_show_refr_time;
+
+extern uint16_t keypressed_refr_time;

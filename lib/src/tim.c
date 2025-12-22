@@ -12,6 +12,8 @@
 #include "flash.h"
 #include "alerts.h"
 
+#include "img.h"
+
 #define NO_SIGNAL 2
 
 extern void delay(__IO uint32_t tck);
@@ -32,7 +34,6 @@ uint8_t signal=NO_SIGNAL; // Принятый бит
 
 uint8_t is_prog_mode=0, is_signal_power_mode=0;
 
-uint8_t show_battery_flag=0;
 volatile uint8_t adc_in_flag=SIGNAL_ADC;
 volatile uint8_t adc_in_battery_flag=CHARGE_ADC;
 
@@ -46,6 +47,24 @@ uint8_t refresh_time=4;
 //char mess_full[MESS_MAX_SIZE]={0,};
 
 uint32_t Time_To_Sleep;
+
+uint8_t Items_Num=0;
+
+uint8_t receive_bit_show_flag=0,
+				message_received=0,
+				receive_start_flag=0,
+				message_menu_flag=0,
+				is_menu=1;
+
+		static uint8_t offdelay = 10, SOS_delay=10, lock_delay=10;
+		static uint8_t switch_flag = 0, two_keys_flag=0;
+		uint8_t keys_lock_flag=0, autolock_flag=0;
+		
+		uint32_t messages_addr=0;
+
+uint8_t batt_procent;
+uint8_t lightning_on=1, lightning_off=1;
+
 
 /*============Таймер таймаутов==============*/
 
@@ -75,24 +94,91 @@ void TIM3_IRQHandler(void){
 	else TIM17->CR1|=TIM_CR1_CEN;
 	if(t_label) --t_label;
 	if (timer1ms) timer1ms--;
-	if(!--batt_refr_time){
-		batt_refr_time=40000;
-		#ifdef ADC_INTERRUPT
-			adc_in_flag=B_OR_CH_ADC;
-			adc_in_battery_flag=(adc_in_battery_flag+1)&0b1;
-			switch(adc_in_battery_flag){
-						case BATTERY_ADC:
-							ADC1->CHSELR=ADC_CHSELR_CHSEL2;
-							ADC1->CR |= ADC_CR_ADSTART;
-						break;
-						
-						case CHARGE_ADC:
-							ADC1->CHSELR=ADC_CHSELR_CHSEL3;
-							ADC1->CR |= ADC_CR_ADSTART;
-						break;
+	
+//======Вывод часов=====//
+	
+	if(!--timeshow_refr_time){
+		timeshow_refr_time=TIMESHOW_REFR_TIME;
+		if((RTC->ISR & RTC_ISR_RSF) == RTC_ISR_RSF){
+			strcpy(str_temp, RTC_GetDate());
+			TFT_Send_Str(0, 10, str_temp, strlen(str_temp), Font_7x9, WHITE, BLACK);
+			strcpy(str_temp, RTC_GetTime());
+			TFT_Send_Str(0, 20, str_temp, strlen(str_temp), Font_11x18, WHITE, BLACK);
+		}
+	}
+	
+	
+//======Вывод батареи======//
+	
+	if(show_battery_flag){ // !--batt_refr_time
+		#ifndef ADC_INTERRUPT
+			if(signal_timer_flag){
+				signal_timer_flag=0;
+			ADC1->CHSELR=ADC_CHSELR_CHSEL2;
+			ADC1->CR |= ADC_CR_ADSTART;
+			while (!(ADC1->ISR & ADC_ISR_EOC));
+			adc[0]=ADC1->DR;
+//			ADC1->CR |= ADC_CR_ADSTP;
+			
+			ADC1->CHSELR=ADC_CHSELR_CHSEL3;
+			ADC1->CR |= ADC_CR_ADSTART;
+			while (!(ADC1->ISR & ADC_ISR_EOC));
+			adc[1]=ADC1->DR;
+//			ADC1->CR |= ADC_CR_ADSTP;
+			
+			ADC1->CHSELR=ADC_CHSELR_CHSEL9;
+			ADC1->CR |= ADC_CR_ADSTART;
+			while (!(ADC1->ISR & ADC_ISR_EOC));
+			adc[2]=ADC1->DR;
+//			ADC1->CR |= ADC_CR_ADSTP;
+				signal_timer_flag=1;
 			}
 		#endif // ADC_INTERRUPT
-		show_battery_flag=1;
+			
+//		batt_refr_time=180;     // Значение батареи обновляется раз в 30сек.
+
+		show_battery_flag=0;
+		
+		batt_procent=(adc[0]-2100)/4; // (adc[0]*100)/2339 2120==0% -2035)/3
+		if(batt_procent>100) batt_procent=100;
+		
+		sprintf(str_temp, "%3d%%", batt_procent);
+		
+		if(batt_procent>60) TFT_Send_Str(92, 4, str_temp, strlen(str_temp), Font_6x8, GREEN, BLACK);
+		if(batt_procent<=60 && batt_procent>20) TFT_Send_Str(92, 4, str_temp, strlen(str_temp), Font_6x8, YELLOW, BLACK);
+		if(batt_procent<=20) TFT_Send_Str(92, 4, str_temp, strlen(str_temp), Font_6x8, RED, BLACK);
+			
+		if(adc[1]>1000 && lightning_on) {
+			TFT_Draw_Image_Mono(lightning_mono_arr, lightning_mono_width, lightning_mono_height, 80, 0, 0xE3E3, BLACK);
+			lightning_on=0;
+			lightning_off=1;
+			ALERT_ForNotification();
+		}
+		if(adc[1]<1000 && lightning_off) {
+			TFT_Fill_Area(80, 0, 80+lightning_mono_width, 0+lightning_mono_height, BLACK);
+			lightning_on=1;
+			lightning_off=0;
+//			ALERT_ForNotification();
+		}
+	}
+
+	
+//=========Вывод принятого бита=========//
+	
+	if(receive_bit_show_flag) { ShowSignal(); message_received=1; receive_bit_show_flag=0;}
+	
+	if(is_signal_power_mode){
+		if(adc[2]>sign_max) sign_max=adc[2];
+		if(adc[2]<sign_min) sign_min=adc[2];
+		if((sign_max-sign_min)*100/4096>0){
+			sprintf(str_temp, "%3d%%", (sign_max-sign_min)*100/4096);
+			TFT_Send_Str(0, 120, str_temp, strlen(str_temp), Font_11x18, WHITE, BLACK);
+		}
+		if(!--refresh_time){
+			refresh_time=3;
+			sign_max=2048;
+			sign_min=2048;
+		}
 	}
 }
 
@@ -133,20 +219,6 @@ void TIM6_Init(void){
 	TIM6->DIER=TIM_DIER_UIE;
 	TIM6->CR1|=TIM_CR1_CEN;
 }
-
-uint8_t Items_Num=0;
-
-uint8_t receive_bit_show_flag=0,
-				message_received=0,
-				receive_start_flag=0,
-				message_menu_flag=0,
-				is_menu=1;
-
-		static uint8_t offdelay = 10, SOS_delay=10, lock_delay=10;
-		static uint8_t switch_flag = 0, two_keys_flag=0;
-		uint8_t keys_lock_flag=0, autolock_flag=0;
-		
-		uint32_t messages_addr=0;
 
 void TIM6_IRQHandler(void){
 	TIM6->SR&=~TIM_SR_UIF;                      // A11 - UP, B9 - DOWN, A12 - BACK, B8 - OK
@@ -838,9 +910,6 @@ void TIM14_Init(void){
 	TIM14->DIER=TIM_DIER_UIE;
 	TIM14->CR1|=TIM_CR1_CEN;
 }
-
-uint8_t batt_procent;
-uint8_t lightning_on=1, lightning_off=1;
 
 #include "img.h"
 void TIM14_IRQHandler(void){
