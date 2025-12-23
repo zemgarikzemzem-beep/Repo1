@@ -16,6 +16,11 @@
 
 #define NO_SIGNAL 2
 
+void KeyPanel(void);
+void TimeShow(void);
+void BatteryShow(void);
+void SignalAmplitude(void);
+
 extern void delay(__IO uint32_t tck);
 
 extern volatile uint16_t t_label;
@@ -37,7 +42,7 @@ uint8_t is_prog_mode=0, is_signal_power_mode=0;
 uint32_t accident_show_time=80000;
 
 uint16_t sign_max=0, sign_min=4095;
-uint8_t refresh_time=4;
+uint16_t refresh_time=4;
 
 //uint32_t long_press=0;
 
@@ -63,7 +68,11 @@ uint8_t batt_procent;
 uint8_t lightning_on=1, lightning_off=1;
 
 
-/*============Таймер таймаутов==============*/
+
+
+//--------------------------------------------------------------------------------------
+//          ТАЙМЕР ТАЙМАУТОВ, НЕПРЕРЫВНОГО ВЫВОДА И ОТСЛЕЖИВАНИЯ НАЖАТИЙ КНОПОК
+//--------------------------------------------------------------------------------------
 
 void TIM3_Init(void){
 	RCC->APB1ENR|=RCC_APB1ENR_TIM3EN;
@@ -85,6 +94,7 @@ uint16_t ms_count=0;
 void TIM3_IRQHandler(void){
 	TIM3->SR&=~TIM_SR_UIF;
 	
+//======Таймауты=====//
 	if(Time_To_Sleep) --Time_To_Sleep;
 //	if(offtimeout) --offtimeout;
 	if(accident_show_time) --accident_show_time;
@@ -92,96 +102,42 @@ void TIM3_IRQHandler(void){
 	if(t_label) --t_label;
 	if (timer1ms) timer1ms--;
 	
-//======Вывод часов=====//
 	
+//======Вывод часов=====//
 	if(!--timeshow_refr_time){
 		timeshow_refr_time=TIMESHOW_REFR_TIME;
-		if((RTC->ISR & RTC_ISR_RSF) == RTC_ISR_RSF){
-			strcpy(str_temp, RTC_GetDate());
-			TFT_Send_Str(0, 10, str_temp, strlen(str_temp), Font_7x9, WHITE, BLACK);
-			strcpy(str_temp, RTC_GetTime());
-			TFT_Send_Str(0, 20, str_temp, strlen(str_temp), Font_11x18, WHITE, BLACK);
-		}
+		TimeShow();
 	}
 	
 	
 //======Вывод батареи======//
-	
-	if(show_battery_flag){ // !--batt_refr_time
-		#ifndef ADC_INTERRUPT
-			if(signal_timer_flag){
-				signal_timer_flag=0;
-			ADC1->CHSELR=ADC_CHSELR_CHSEL2;
-			ADC1->CR |= ADC_CR_ADSTART;
-			while (!(ADC1->ISR & ADC_ISR_EOC));
-			adc[0]=ADC1->DR;
-//			ADC1->CR |= ADC_CR_ADSTP;
-			
-			ADC1->CHSELR=ADC_CHSELR_CHSEL3;
-			ADC1->CR |= ADC_CR_ADSTART;
-			while (!(ADC1->ISR & ADC_ISR_EOC));
-			adc[1]=ADC1->DR;
-//			ADC1->CR |= ADC_CR_ADSTP;
-			
-			ADC1->CHSELR=ADC_CHSELR_CHSEL9;
-			ADC1->CR |= ADC_CR_ADSTART;
-			while (!(ADC1->ISR & ADC_ISR_EOC));
-			adc[2]=ADC1->DR;
-//			ADC1->CR |= ADC_CR_ADSTP;
-				signal_timer_flag=1;
-			}
-		#endif // ADC_INTERRUPT
-			
-//		batt_refr_time=180;     // Значение батареи обновляется раз в 30сек.
-
-		show_battery_flag=0;
-		
-		batt_procent=(adc[0]-2100)/4; // (adc[0]*100)/2339 2120==0% -2035)/3
-		if(batt_procent>100) batt_procent=100;
-		
-		sprintf(str_temp, "%3d%%", batt_procent);
-		
-		if(batt_procent>60) TFT_Send_Str(92, 4, str_temp, strlen(str_temp), Font_6x8, GREEN, BLACK);
-		if(batt_procent<=60 && batt_procent>20) TFT_Send_Str(92, 4, str_temp, strlen(str_temp), Font_6x8, YELLOW, BLACK);
-		if(batt_procent<=20) TFT_Send_Str(92, 4, str_temp, strlen(str_temp), Font_6x8, RED, BLACK);
-			
-		if(adc[1]>1000 && lightning_on) {
-			TFT_Draw_Image_Mono(lightning_mono_arr, lightning_mono_width, lightning_mono_height, 80, 0, 0xE3E3, BLACK);
-			lightning_on=0;
-			lightning_off=1;
-			ALERT_ForNotification();
-		}
-		if(adc[1]<1000 && lightning_off) {
-			TFT_Fill_Area(80, 0, 80+lightning_mono_width, 0+lightning_mono_height, BLACK);
-			lightning_on=1;
-			lightning_off=0;
-//			ALERT_ForNotification();
-		}
+	if(show_battery_flag){
+		BatteryShow();
 	}
 
 	
 //=========Вывод принятого бита=========//
-	
 	if(receive_bit_show_flag) { ShowSignal(); message_received=1; receive_bit_show_flag=0;}
 	
+	
+//=========Вывод амплитуды сигнала=========//
 	if(is_signal_power_mode){
-		if(adc[2]>sign_max) sign_max=adc[2];
-		if(adc[2]<sign_min) sign_min=adc[2];
-		if((sign_max-sign_min)*100/4096>0){
-			sprintf(str_temp, "%3d%%", (sign_max-sign_min)*100/4096);
-			TFT_Send_Str(0, 120, str_temp, strlen(str_temp), Font_11x18, WHITE, BLACK);
-		}
-		if(!--refresh_time){
-			refresh_time=3;
-			sign_max=2048;
-			sign_min=2048;
-		}
+		SignalAmplitude();
+	}
+	
+//======Отслеживание нажатий клавиатуры======//
+	if(!--keypressed_refr_time){
+		keypressed_refr_time=KEYPRESSED_REFR_TIME;
+		KeyPanel();
 	}
 }
 
-//-----------------------------------------------------------------------
 
-/*============Таймер ШИМ подсветки==============*/
+
+//--------------------------------------------------------
+//          			ТАЙМЕР ШИМ ПОДСВЕТКИ
+//--------------------------------------------------------
+
 
 void TIM1_PWM_Init(void){
 	RCC->APB2ENR|=RCC_APB2ENR_TIM1EN;
@@ -199,274 +155,12 @@ void TIM1_PWM_Init(void){
 	TIM1->CR1|=TIM_CR1_CEN;
 }
 
-//-----------------------------------------------------------------------
 
-/*============Таймер обработки кнопок==============*/
-
-void TIM6_Init(void){
-	
-	RCC->APB1ENR|=RCC_APB1ENR_TIM6EN;
-	NVIC_EnableIRQ(TIM6_IRQn);
-	NVIC_SetPriority(TIM6_IRQn, 1);
-	TIM6->PSC=SystemCoreClock/1000-1;   // Prescaler = (f(APB1) / f) - 1
-	TIM6->ARR=200-1;   // Period; Время переполнения = PSC*ARR/f(APB1)
-	TIM6->CR1=0;
-	TIM6->EGR|=TIM_EGR_UG;
-	TIM6->SR&=~TIM_SR_UIF;
-	TIM6->DIER=TIM_DIER_UIE;
-	TIM6->CR1|=TIM_CR1_CEN;
-}
-
-void TIM6_IRQHandler(void){
-	TIM6->SR&=~TIM_SR_UIF;                      // A11 - UP, B9 - DOWN, A12 - BACK, B8 - OK
-	Items_Num=Current_Menu[0].value/10;  // Количество пунктов текущего меню
-	if(message_menu_flag){
-		Message_Menu_Navigation(messages_addr);
-	}
-	else{
-		if(DOWN_KEY && !two_keys_flag && !keys_lock_flag){
-			ALERT_ForClick();
-			if(is_menu) Menu_Down();                // Переход на пункт меню вниз
-		}
-		
-		if(UP_KEY && !two_keys_flag){
-			if(!keys_lock_flag){
-				ALERT_ForClick();
-				if(is_menu) Menu_Up();                 // Переход на пункт меню вверх
-			}
-			if (!lock_delay--) {
-				keys_lock_flag=0;
-				TFT_Send_Str(MENU_CON_X, MENU_CON_Y+18, "БЛОК", 4, Font_11x18, WHITE, BLACK);
-			}
-		}
-		else lock_delay=10;
-		
-		if(ENTER_KEY && !two_keys_flag && !keys_lock_flag){
-			ALERT_ForClick();
-			
-			//======Переход в подменю======//
-			if(Current_Menu[Button_Selected].submenu != 0){
-				Current_Menu=Current_Menu[Button_Selected].submenu;
-				if(Current_Menu!=0){
-					Menu_Draw(Current_Menu);
-					Menu_Item_Select(Current_Menu, 0);
-				}
-			}
-			
-			//======Главное меню======//
-			else if(Current_Menu==menu_main){
-				switch(Button_Selected){
-					case BUTTONS_LOCK:
-						TFT_Send_Str(MENU_CON_X, MENU_CON_Y+18, "БЛОК", 4, Font_11x18, BLUE, RED);
-						keys_lock_flag=1;
-						break;
-					case MESS_ARCHIVE:
-						messages_addr=FLASH_REC_MESS_ADDR;
-						Mess_Menu_Draw(messages_addr);
-						message_menu_flag=1;
-						break;
-					case MESSAGES:
-						messages_addr=FLASH_PLA_ADDR;
-						Mess_Menu_Draw(messages_addr);
-						message_menu_flag=1;
-						break;
-					case PROGRAMMING:
-//						cc_init();
-						is_menu=0;
-						_CLEAR_MENU_SCREEN;
-						TFT_Send_Str(0, 120, "Ожидание...", 11, Font_11x18, MAGENTA, BLACK);
-//						label_on=1;
-						is_prog_mode=1;
-						break;
-					case SIGNAL_POWER:
-						is_menu=0;
-						_CLEAR_MENU_SCREEN;
-						sign_max=0;
-						sign_min=4095;
-						is_signal_power_mode=1;
-						break;
-				}
-			}
-			
-			//======Меню действий с сообщением======//
-			else if(Current_Menu==menu_mess){
-				switch(Button_Selected){
-					case READ_MESS:
-						Message_Read(FLASH_PLA_ADDR);
-						break;
-					case INFO_MESS:
-						break;
-				}
-			}
-			
-			//======Меню инверсии======//
-			else if(Current_Menu==menu_inversion){
-				if(Button_Selected==0){TFT_CSEN; TFT_Send_Command(ST7735_INVON); TFT_CSDIS;}
-				else {TFT_CSEN; TFT_Send_Command(ST7735_INVOFF); TFT_CSDIS;}
-			}
-			
-			//======Меню настройки яркости======//
-			else if(Current_Menu==menu_brightness){
-				if(Button_Selected==0) { if(TIM1->CCR3<5000) TIM1->CCR3+=1000; else TIM1->CCR3=1000;}
-				else { if(TIM1->CCR3>1000) TIM1->CCR3-=1000; else TIM1->CCR3=5000;}
-			}
-			
-			//======Меню настройки времени======//
-			else if(Current_Menu==menu_time){
-				switch(Button_Selected){
-					case HOURS:
-						Hour_Plus();
-						break;
-					case MINUTES:
-						Min_Plus();
-						break;
-					case DAY:
-						Day_Plus();
-						break;
-					case MONTH:
-						Month_Plus();
-						break;
-					case YEAR:
-						Year_Plus();
-						break;
-				}
-			}
-			
-			else if(Current_Menu==menu_autolock){
-				switch(Button_Selected){
-					case AUTOLOCK_ON:
-						autolock_flag=1;
-						TFT_Send_Str(0, 0, "АБл", 3, Font_7x9, GREEN, BLACK);
-						break;
-					case AUTOLOCK_OFF:
-						autolock_flag=0;
-						TFT_Fill_Area(0, 0, 22, 9, BLACK);
-						break;
-				}
-			}
-			
-			else if(Current_Menu==menu_autosleep_time){
-				switch(Button_Selected){
-					case SLEEP_TIME_PLUS:
-						if(Button_Selected==SLEEP_TIME_PLUS){
-							//is_menu=0;
-							char locktime_str[2];
-							if(++MINUTES_TO_SLEEP>10) MINUTES_TO_SLEEP=1;
-							sprintf(locktime_str, "%2d мин.", MINUTES_TO_SLEEP);
-							TFT_Send_Str(MENU_CON_X, MENU_CON_Y+18, locktime_str, strlen(locktime_str), Font_11x18, CYAN, BLACK);
-							Time_To_Sleep=MINUTES_TO_SLEEP*60*1000;
-						}
-						break;
-				}
-			}
-			
-		}
-//---------
-		
-		if(BACK_KEY && !two_keys_flag && !keys_lock_flag){
-			
-			ALERT_ForClick();
-			
-			//======Выключение с долгого нажатия кнопки======//
-			if (!offdelay--) {
-					__disable_irq();//запрещаем прерывания
-					TFT_Fill_Color(BLACK);
-//					TIM1->CCR3=0; // Подсветка
-					FLASH_WriteByte(FLASH_SDFB_ADDR, 1);	// Чтобы перезагрузка не вырубала пейджер
-					GPIOA->BRR|=(1<<15); // Отключение
-				}
-			
-			//======Выход в подменю (если есть)======//
-			if(Current_Menu[Button_Selected].premenu!=0){
-				Current_Menu=Current_Menu[Button_Selected].premenu;   // Определение наличия предменю
-				Menu_Draw(Current_Menu);
-				Menu_Item_Select(Current_Menu, 0);
-				Sel_Butt_Pos=0;
-			}
-			
-			//======Выход из пункта ПРОГРАММИРОВАНИЕ в главное меню======//
-			if(Current_Menu==menu_main && (Button_Selected==PROGRAMMING || Button_Selected==SIGNAL_POWER)){
-//				TIM15->CR1&=~TIM_CR1_CEN;
-//				TIM16->CR1&=~TIM_CR1_CEN;
-//				TIM17->CR1&=~TIM_CR1_CEN;
-				Menu_Draw(Current_Menu);
-				Menu_Item_Select(Current_Menu, 0);
-//				receive_bit_show_flag=0;
-				is_menu=1;
-				is_prog_mode=0;
-				is_signal_power_mode=0;
-			}
-			
-			//======Выход из демонстрации аварии======//
-			if(message_received){
-//				receive_bit_show_flag=0;
-				is_menu=1;
-				TIM17->CR1&=~TIM_CR1_CEN;
-				Menu_Draw(Current_Menu);
-				Menu_Item_Select(Current_Menu, 0);
-			}
-			
-			//======Выход из меню действий с сообщением в список сообщений======//
-			if(Current_Menu==menu_mess){
-				Message_Current_Str=0;
-				_CLEAR_MENU_SCREEN;
-				for(uint8_t i=0; i<MAX_MESS_ITEM_SCREEN; ++i){
-					FLASH_ReadStr(FLASH_PLA_ADDR+MESS_MAX_SIZE*((Message_Selected-mess_menu_sel_pos+i)%MESS_NUM), (uint8_t*)mess, MESS_MAX_ITEM_LENGTH);
-					TFT_Send_Str(MENU_CON_X, MENU_CON_Y+i*18, mess, MESS_MAX_ITEM_LENGTH, Font_11x18, (mess_menu_sel_pos!=i)?WHITE:BLACK, (mess_menu_sel_pos!=i)?BLACK:WHITE);
-				}
-				message_menu_flag=1;
-			}
-			
-			
-		}
-		else offdelay=10;  // Если кнопка отпущена - процесс отключения прерван
-		
-		
-//			if (GPIOA->IDR&(1<<12)) {
-//				if (!switch_flag) switch_flag = 1;
-//				offdelay = 10;
-//			}
-//			else if (switch_flag == 1) {
-//				if (!offdelay) {
-//					TIM1->CCR3=0; // Подсветка
-//					GPIOA->BRR|=(1<<15); // Отключение
-//					switch_flag = 2;
-//				}
-//			}
-//			if (offdelay) offdelay--;
-		
-			//======SOS-звонок======//
-		if(UP_KEY && DOWN_KEY ||             // При зажатии любых двух клавиш - СОС-звонок, либо - выход из СОС-звонка
-			UP_KEY && BACK_KEY ||
-			UP_KEY && ENTER_KEY ||
-			DOWN_KEY && BACK_KEY ||
-			DOWN_KEY && ENTER_KEY ||
-			BACK_KEY && ENTER_KEY){
-				
-			two_keys_flag=1;
-			if(!SOS_delay--){
-				SOS_delay=10;
-				if(switch_flag_SOS){
-					switch_flag_SOS=0;
-					TFT_Fill_Area(90, 16, 122, 34, BLACK);
-				}
-				else {
-					switch_flag_SOS=1;
-					TFT_Send_Str(90, 16, "SOS", 3, Font_11x18, RED, CYAN);
-					t_music=0;
-				}
-			}
-		}
-		else{
-			SOS_delay=10;
-			two_keys_flag=0;
-		}
-	}
-	
-	
-}
 
 //-----------------------------------------------------------------------
+//               ТАЙМЕРЫ ОБРАБОТКИ ВХОДЯЩЕГО СИГНАЛА
+//-----------------------------------------------------------------------
+
 
 #define HETER_ALG
 
@@ -849,81 +543,275 @@ void TIM17_IRQHandler(void){
 				}
 			break;
 		}
+	}
+}
+
+
+
+//-----------------------------------------------------------------------
+//               ВСПОМОГАТЕЛЬНЫЕ ПРОЦЕДУРЫ
+//-----------------------------------------------------------------------
+
+inline void KeyPanel(void){
+	Items_Num=Current_Menu[0].value/10;  // Количество пунктов текущего меню
+	if(message_menu_flag){
+		Message_Menu_Navigation(messages_addr);
+	}
+	else{
+		if(DOWN_KEY && !two_keys_flag && !keys_lock_flag){
+			ALERT_ForClick();
+			if(is_menu) Menu_Down();                // Переход на пункт меню вниз
+		}
 		
-//		if(opcode==READY_TO_RECEIVE){
-//			receive_word=(receive_word<<1)+signal;
-//			
-//			if((receive_word&0xFF)==0xAA) {
-//				batt_refr_time=240;
+		if(UP_KEY && !two_keys_flag){
+			if(!keys_lock_flag){
+				ALERT_ForClick();
+				if(is_menu) Menu_Up();                 // Переход на пункт меню вверх
+			}
+			if (!lock_delay--) {
+				keys_lock_flag=0;
+				TFT_Send_Str(MENU_CON_X, MENU_CON_Y+18, "БЛОК", 4, Font_11x18, WHITE, BLACK);
+			}
+		}
+		else lock_delay=10;
+		
+		if(ENTER_KEY && !two_keys_flag && !keys_lock_flag){
+			ALERT_ForClick();
+			
+			//======Переход в подменю======//
+			if(Current_Menu[Button_Selected].submenu != 0){
+				Current_Menu=Current_Menu[Button_Selected].submenu;
+				if(Current_Menu!=0){
+					Menu_Draw(Current_Menu);
+					Menu_Item_Select(Current_Menu, 0);
+				}
+			}
+			
+			//======Главное меню======//
+			else if(Current_Menu==menu_main){
+				switch(Button_Selected){
+					case BUTTONS_LOCK:
+						TFT_Send_Str(MENU_CON_X, MENU_CON_Y+18, "БЛОК", 4, Font_11x18, BLUE, RED);
+						keys_lock_flag=1;
+						break;
+					case MESS_ARCHIVE:
+						messages_addr=FLASH_REC_MESS_ADDR;
+						Mess_Menu_Draw(messages_addr);
+						message_menu_flag=1;
+						break;
+					case MESSAGES:
+						messages_addr=FLASH_PLA_ADDR;
+						Mess_Menu_Draw(messages_addr);
+						message_menu_flag=1;
+						break;
+					case PROGRAMMING:
+//						cc_init();
+						is_menu=0;
+						_CLEAR_MENU_SCREEN;
+						TFT_Send_Str(0, 120, "Ожидание...", 11, Font_11x18, MAGENTA, BLACK);
+//						label_on=1;
+						is_prog_mode=1;
+						break;
+					case SIGNAL_POWER:
+						is_menu=0;
+						_CLEAR_MENU_SCREEN;
+						sign_max=0;
+						sign_min=4095;
+						is_signal_power_mode=1;
+						break;
+				}
+			}
+			
+			//======Меню действий с сообщением======//
+			else if(Current_Menu==menu_mess){
+				switch(Button_Selected){
+					case READ_MESS:
+						Message_Read(FLASH_PLA_ADDR);
+						break;
+					case INFO_MESS:
+						break;
+				}
+			}
+			
+			//======Меню инверсии======//
+			else if(Current_Menu==menu_inversion){
+				if(Button_Selected==0){TFT_CSEN; TFT_Send_Command(ST7735_INVON); TFT_CSDIS;}
+				else {TFT_CSEN; TFT_Send_Command(ST7735_INVOFF); TFT_CSDIS;}
+			}
+			
+			//======Меню настройки яркости======//
+			else if(Current_Menu==menu_brightness){
+				if(Button_Selected==0) { if(TIM1->CCR3<5000) TIM1->CCR3+=1000; else TIM1->CCR3=1000;}
+				else { if(TIM1->CCR3>1000) TIM1->CCR3-=1000; else TIM1->CCR3=5000;}
+			}
+			
+			//======Меню настройки времени======//
+			else if(Current_Menu==menu_time){
+				switch(Button_Selected){
+					case HOURS:
+						Hour_Plus();
+						break;
+					case MINUTES:
+						Min_Plus();
+						break;
+					case DAY:
+						Day_Plus();
+						break;
+					case MONTH:
+						Month_Plus();
+						break;
+					case YEAR:
+						Year_Plus();
+						break;
+				}
+			}
+			
+			else if(Current_Menu==menu_autolock){
+				switch(Button_Selected){
+					case AUTOLOCK_ON:
+						autolock_flag=1;
+						TFT_Send_Str(0, 0, "АБл", 3, Font_7x9, GREEN, BLACK);
+						break;
+					case AUTOLOCK_OFF:
+						autolock_flag=0;
+						TFT_Fill_Area(0, 0, 22, 9, BLACK);
+						break;
+				}
+			}
+			
+			else if(Current_Menu==menu_autosleep_time){
+				switch(Button_Selected){
+					case SLEEP_TIME_PLUS:
+						if(Button_Selected==SLEEP_TIME_PLUS){
+							//is_menu=0;
+							char locktime_str[2];
+							if(++MINUTES_TO_SLEEP>10) MINUTES_TO_SLEEP=1;
+							sprintf(locktime_str, "%2d мин.", MINUTES_TO_SLEEP);
+							TFT_Send_Str(MENU_CON_X, MENU_CON_Y+18, locktime_str, strlen(locktime_str), Font_11x18, CYAN, BLACK);
+							Time_To_Sleep=MINUTES_TO_SLEEP*60*1000;
+						}
+						break;
+				}
+			}
+			
+		}
+//---------
+		
+		if(BACK_KEY && !two_keys_flag && !keys_lock_flag){
+			
+			ALERT_ForClick();
+			
+			//======Выключение с долгого нажатия кнопки======//
+			if (!offdelay--) {
+					__disable_irq();//запрещаем прерывания
+					TFT_Fill_Color(BLACK);
+//					TIM1->CCR3=0; // Подсветка
+					FLASH_WriteByte(FLASH_SDFB_ADDR, 1);	// Чтобы перезагрузка не вырубала пейджер
+					GPIOA->BRR|=(1<<15); // Отключение
+				}
+			
+			//======Выход в подменю (если есть)======//
+			if(Current_Menu[Button_Selected].premenu!=0){
+				Current_Menu=Current_Menu[Button_Selected].premenu;   // Определение наличия предменю
+				Menu_Draw(Current_Menu);
+				Menu_Item_Select(Current_Menu, 0);
+				Sel_Butt_Pos=0;
+			}
+			
+			//======Выход из пунктов ПРОГРАММИРОВАНИЕ и МОЩНОСТЬ в главное меню======//
+			if(Current_Menu==menu_main && (Button_Selected==PROGRAMMING || Button_Selected==SIGNAL_POWER)){
+//				TIM15->CR1&=~TIM_CR1_CEN;
+//				TIM16->CR1&=~TIM_CR1_CEN;
+//				TIM17->CR1&=~TIM_CR1_CEN;
+				Menu_Draw(Current_Menu);
+				Menu_Item_Select(Current_Menu, 0);
+//				receive_bit_show_flag=0;
+				is_menu=1;
+				is_prog_mode=0;
+				is_signal_power_mode=0;
+			}
+			
+			//======Выход из демонстрации аварии======//
+			if(message_received){
+//				receive_bit_show_flag=0;
+				is_menu=1;
+				TIM17->CR1&=~TIM_CR1_CEN;
+				Menu_Draw(Current_Menu);
+				Menu_Item_Select(Current_Menu, 0);
+			}
+			
+			//======Выход из меню действий с сообщением в список сообщений======//
+			if(Current_Menu==menu_mess){
+				Message_Current_Str=0;
+				_CLEAR_MENU_SCREEN;
+				for(uint8_t i=0; i<MAX_MESS_ITEM_SCREEN; ++i){
+					FLASH_ReadStr(FLASH_PLA_ADDR+MESS_MAX_SIZE*((Message_Selected-mess_menu_sel_pos+i)%MESS_NUM), (uint8_t*)mess, MESS_MAX_ITEM_LENGTH);
+					TFT_Send_Str(MENU_CON_X, MENU_CON_Y+i*18, mess, MESS_MAX_ITEM_LENGTH, Font_11x18, (mess_menu_sel_pos!=i)?WHITE:BLACK, (mess_menu_sel_pos!=i)?BLACK:WHITE);
+				}
+				message_menu_flag=1;
+			}
+			
+			
+		}
+		else offdelay=10;  // Если кнопка отпущена - процесс отключения прерван
+		
+		
+//			if (GPIOA->IDR&(1<<12)) {
+//				if (!switch_flag) switch_flag = 1;
+//				offdelay = 10;
 //			}
-//		
-//			if((receive_word&0x3FFFF)==0x2AAA9){
-//				opcode=BYTE1_RECEIVE; // (receive_word&0xFF)==0xA9
-//				TFT_Send_Str(100, 16, "!", 1, Font_11x18, WHITE, BLACK);
+//			else if (switch_flag == 1) {
+//				if (!offdelay) {
+//					TIM1->CCR3=0; // Подсветка
+//					GPIOA->BRR|=(1<<15); // Отключение
+//					switch_flag = 2;
+//				}
 //			}
-//		}
-//		
-//		else if(opcode==BYTE1_RECEIVE){
-//			recw1=(recw1<<1)+signal;
-//			++receive_count;
-//			if(receive_count==32){
-//				opcode=BYTE2_RECEIVE;
-//				receive_count=0;
-//			}
-//		}
-//		
-//		else if(opcode==BYTE2_RECEIVE){
-//			recw2=(recw2<<1)+signal;
-//			++receive_count;
-//			if(receive_count==11){
-//				opcode=READY_TO_RECEIVE;
-//				receive_count=0;
-//				receive_bit_show_flag=1;
-//				dout04=0;
-//				dout14=0;
-//				err0=0;
-//				err1=0;
-//	//			accident_show_time=80000;
-//			}
-//		}
+//			if (offdelay) offdelay--;
+		
+			//======SOS-звонок======//
+		if(UP_KEY && DOWN_KEY ||             // При зажатии любых двух клавиш - СОС-звонок, либо - выход из СОС-звонка
+			UP_KEY && BACK_KEY ||
+			UP_KEY && ENTER_KEY ||
+			DOWN_KEY && BACK_KEY ||
+			DOWN_KEY && ENTER_KEY ||
+			BACK_KEY && ENTER_KEY){
+				
+			two_keys_flag=1;
+			if(!SOS_delay--){
+				SOS_delay=10;
+				if(switch_flag_SOS){
+					switch_flag_SOS=0;
+					TFT_Fill_Area(90, 16, 122, 34, BLACK);
+				}
+				else {
+					switch_flag_SOS=1;
+					TFT_Send_Str(90, 16, "SOS", 3, Font_11x18, RED, CYAN);
+					t_music=0;
+				}
+			}
+		}
+		else{
+			SOS_delay=10;
+			two_keys_flag=0;
+		}
 	}
 }
 
 //-----------------------------------------------------------------------
 
-
-/*============Таймер непрерывного вывода==============*/
-
-void TIM14_Init(void){
-	
-	RCC->APB1ENR|=RCC_APB1ENR_TIM14EN;
-	NVIC_EnableIRQ(TIM14_IRQn);
-	NVIC_SetPriority(TIM14_IRQn, 2);
-	TIM14->PSC=SystemCoreClock/1000-1;   // Prescaler = (f(APB1) / f) - 1
-	TIM14->ARR=250-1;   // Period; Время переполнения = PSC*ARR/f(APB1)
-	TIM14->CR1=0;
-	TIM14->EGR|=TIM_EGR_UG;
-	TIM14->SR&=~TIM_SR_UIF;
-	TIM14->DIER=TIM_DIER_UIE;
-	TIM14->CR1|=TIM_CR1_CEN;
+inline void TimeShow(void){
+		if((RTC->ISR & RTC_ISR_RSF) == RTC_ISR_RSF){
+			strcpy(str_temp, RTC_GetDate());
+			TFT_Send_Str(0, 10, str_temp, strlen(str_temp), Font_7x9, WHITE, BLACK);
+			strcpy(str_temp, RTC_GetTime());
+			TFT_Send_Str(0, 20, str_temp, strlen(str_temp), Font_11x18, WHITE, BLACK);
+		}
 }
 
-#include "img.h"
-void TIM14_IRQHandler(void){
-	TIM14->SR&=~TIM_SR_UIF;
-	
-//======Вывод часов=====//
-	
-	if((RTC->ISR & RTC_ISR_RSF) == RTC_ISR_RSF){
-		strcpy(str_temp, RTC_GetDate());
-		TFT_Send_Str(0, 10, str_temp, strlen(str_temp), Font_7x9, WHITE, BLACK);
-		strcpy(str_temp, RTC_GetTime());
-		TFT_Send_Str(0, 20, str_temp, strlen(str_temp), Font_11x18, WHITE, BLACK);
-	}
-	
-//======Вывод батареи======//
-	
-	if(show_battery_flag){ // !--batt_refr_time
+//-----------------------------------------------------------------------
+
+inline void BatteryShow(void){ // !--batt_refr_time
 		#ifndef ADC_INTERRUPT
 			if(signal_timer_flag){
 				signal_timer_flag=0;
@@ -973,14 +861,11 @@ void TIM14_IRQHandler(void){
 			lightning_off=0;
 //			ALERT_ForNotification();
 		}
-	}
+}
 
-	
-//=========Вывод принятого бита=========//
-	
-	if(receive_bit_show_flag) { ShowSignal(); message_received=1; receive_bit_show_flag=0;}
-	
-	if(is_signal_power_mode){
+//-----------------------------------------------------------------------
+
+inline void SignalAmplitude(void){
 		if(adc[2]>sign_max) sign_max=adc[2];
 		if(adc[2]<sign_min) sign_min=adc[2];
 		if((sign_max-sign_min)*100/4096>0){
@@ -988,10 +873,8 @@ void TIM14_IRQHandler(void){
 			TFT_Send_Str(0, 120, str_temp, strlen(str_temp), Font_11x18, WHITE, BLACK);
 		}
 		if(!--refresh_time){
-			refresh_time=3;
+			refresh_time=750;
 			sign_max=2048;
 			sign_min=2048;
 		}
-	}
-	
 }
