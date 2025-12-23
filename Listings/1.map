@@ -13,11 +13,11 @@ Section Cross References
     main.o(i.main) refers to spi.o(i.SPI2_Init) for SPI2_Init
     main.o(i.main) refers to disp.o(i.TFT_Init) for TFT_Init
     main.o(i.main) refers to i2c.o(i.I2C1_Init) for I2C1_Init
+    main.o(i.main) refers to tft-menu.o(i.Buttons_Init) for Buttons_Init
     main.o(i.main) refers to tim.o(i.TIM3_Init) for TIM3_Init
     main.o(i.main) refers to tim.o(i.TIM15_Init) for TIM15_Init
     main.o(i.main) refers to tim.o(i.TIM16_Init) for TIM16_Init
     main.o(i.main) refers to tim.o(i.TIM17_Init) for TIM17_Init
-    main.o(i.main) refers to tft-menu.o(i.Buttons_Init) for Buttons_Init
     main.o(i.main) refers to chipcon.o(i.cc_init) for cc_init
     main.o(i.main) refers to crc.o(i.CRC_Init) for CRC_Init
     main.o(i.main) refers to flash.o(i.FLASH_ReadByte) for FLASH_ReadByte
