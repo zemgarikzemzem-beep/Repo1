@@ -331,6 +331,7 @@ void TIM6_IRQHandler(void){
 			//======Выход из демонстрации аварии======//
 			if(message_received){
 //				receive_bit_show_flag=0;
+				message_received=0;
 				is_menu=1;
 				TIM17->CR1&=~TIM_CR1_CEN;
 				Menu_Draw(Current_Menu);
