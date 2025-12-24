@@ -236,6 +236,7 @@ inline void Message_Menu_Navigation(uint32_t addr){
 			}
 		}
 		else{           // ¬ыход из меню выбора действий с сообщением или из пришедшего сообщени€
+			In_Mess=0;
 			Current_Menu=menu_main;
 			Menu_Draw(menu_main);
 			Menu_Item_Select(menu_main, 0);
@@ -724,7 +725,7 @@ inline void ShowSignal(void){
 	TIM15->CR1|=TIM_CR1_CEN;
 	TIM16->CR1|=TIM_CR1_CEN;
 	TIM17->CR1|=TIM_CR1_CEN;
-	
+//	message_received=0;
 }
 
 //-----------------------------------------------------------------------------
