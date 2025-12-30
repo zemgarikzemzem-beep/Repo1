@@ -21,13 +21,31 @@ Target DLL:      STLink\ST-LINKIII-KEIL_SWO.dll V3.3.0.0
 Dialog DLL:      TARMCM1.DLL V1.14.6.0
  
 <h2>Project:</h2>
-C:\Users\User\Desktop\1\PAGER-HETER\BOOTLOADER\bootloader.uvprojx
+C:\Users\User\Repo1\BOOTLOADER\bootloader.uvprojx
 Project File Date:  09/09/2025
 
 <h2>Output:</h2>
 *** Using Compiler 'V6.22', folder: 'C:\Keil_v5\ARM\ARMCLANG\Bin'
 Build target 'Target_1'
-".\Objects\bootloader.axf" - 0 Error(s), 0 Warning(s).
+main.c(218): warning: illegal character encoding in string literal [-Winvalid-source-encoding]
+  218 |                 TFT_Send_Str(10, 50, "<D1><D3><C1><D0> <CF><CE><C8><D1><CA>", 10, Font_11x18, RED, YELLOW);
+      |                                       ^~~~~~~~~~~~~~~~ ~~~~~~~~~~~~~~~~~~~~
+main.c(219): warning: illegal character encoding in string literal [-Winvalid-source-encoding]
+  219 |                 TFT_Send_Str(10, 80, "<C1><D3><D2><CB><CE><C0><C4><C5><D0>", 9, Font_11x18, RED, YELLOW);
+      |                                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+main.c(223): warning: illegal character encoding in string literal [-Winvalid-source-encoding]
+  223 |                 TFT_Send_Str(10, 80, "<CD><C5><D2> <D0><C0><C4><C8><CE><C1><CB><CE><CA><C0>", 14, Font_11x18, RED, YELLOW);
+      |                                       ^~~~~~~~~~~~ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+3 warnings generated.
+compiling main.c...
+lib/src/flash.c(319): warning: illegal character encoding in string literal [-Winvalid-source-encoding]
+  319 |                 TFT_Send_Str(5, 60, "<C8><E4><B8><F2> <E7><E0><EF><E8><F1><FC> <EF><F0><EE><F8><E8><E2><EA><E8>!", 21, Font_11x18, RED, YELLOW);
+      |                                      ^~~~~~~~~~~~~~~~ ~~~~~~~~~~~~~~~~~~~~~~~~ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+1 warning generated.
+compiling flash.c...
+linking...
+Program Size: Code=7768 RO-data=6108 RW-data=56 ZI-data=1856  
+".\Objects\bootloader.axf" - 0 Error(s), 4 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -40,7 +58,7 @@ Package Vendor: Keil
   C:/Users/User/AppData/Local/Arm/Packs/Keil/STM32F0xx_DFP/2.1.1/Drivers/CMSIS/Device/ST/STM32F0xx/Include
 
 <h2>Collection of Component Files used:</h2>
-Build Time Elapsed:  00:00:00
+Build Time Elapsed:  00:00:01
 </pre>
 </body>
 </html>

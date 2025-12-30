@@ -582,9 +582,9 @@ void MessRecToArch(char* data){
 					FLASH_WriteStr_Mess(FLASH_REC_MESS_ADDR+i*MESS_MAX_SIZE, (uint8_t*)tmp_str, MESS_MAX_SIZE); 
 				}
 				FLASH_WriteStr_Mess(FLASH_REC_MESS_ADDR+mess_shift*MESS_MAX_SIZE, (uint8_t*)tmp_last_str, strlen(tmp_last_str)+1);
+				FLASH_WriteByte(FLASH_SETTINGS_ADDR+REC_MESS_NUM, mess_shift+1);
 	}
 //	FLASH_WriteByte(FLASH_SETTINGS_ADDR+CURRENT_REC_MESS, mess_shift+1);
-	FLASH_WriteByte(FLASH_SETTINGS_ADDR+REC_MESS_NUM, mess_shift+1);
 }
 
 uint8_t alarm_type_last=NO_ALARM, alarm_type_now=NO_ALARM;
